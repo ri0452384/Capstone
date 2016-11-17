@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.newdawn.slick.Color;
@@ -6,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
@@ -13,10 +15,17 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-
+/*
+ * 	
+ * 
+ * 
+ * class created by Rayven Ingles
+ */
 public class Workshop extends BasicGameState implements GameState {
 
-	private Image craftButton;
+	private Player smith;
+	
+	//private Image craftButton;
 	private Rectangle craftContainer;
 	
 	private Image imbueButton;
@@ -28,23 +37,25 @@ public class Workshop extends BasicGameState implements GameState {
 	private Image imbueButton2;
 	private Rectangle imbueContainer2;
 	
+	private Polygon wsDoor;
+	
+	private Image background;
+	
 	Weapon wep;
 	private boolean renderWeapon;
-	FlatPhysicalDamage flat;
-	PercentDamage perc;
-	ColdDamage cold;
-	Accuracy accu;
 	
-	Random rand;
+
+	private int scourCount;
 	
-	
+	Workshop(Player smith){
+		this.smith = smith;
+	}
 	
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		//craft button details and container for mouseclick checking
-		craftButton = new Image("Images/craftButton.png");
-		craftContainer = new Rectangle(300, 400, craftButton.getWidth(), craftButton.getHeight());
+		//now is located in the anvil object inside the workshop
+		craftContainer = new Rectangle(665, 433, 170, 80);
 		//rune for the imbue method, which adds a random prefix/suffix to the weapon
 		imbueButton = new Image("Images/imbueButton.png");
 		imbueContainer = new Rectangle(50, 50, imbueButton.getWidth(), imbueButton.getHeight());
@@ -54,19 +65,15 @@ public class Workshop extends BasicGameState implements GameState {
 		//TODO implement a use for this button/rune
 		imbueButton2 = new Image("Images/imbueButton2.png");
 		imbueContainer2 = new Rectangle(50, 250, imbueButton2.getWidth(), imbueButton2.getHeight());
+		wsDoor = new Polygon(new float[]{571,338,	624,338,	624,476,	575,470});
 		
-		//instantiate all magical properties here
-		flat = new FlatPhysicalDamage();
-		perc = new PercentDamage();
-		cold = new ColdDamage();
-		rand = new Random();
-		accu = new Accuracy();
+		background = new Image("Images/workshop.jpg");
+		
 		
 		//do not display the weapon at start
 		renderWeapon = false;
-		
-		//instantiate a weapon, else it will return a NullPointerException after loading workshop screen
-		wep = (Weapon) new ShortSword();
+		//you only have 5 chances to scour any crafted weapon, is set only after crafting
+		scourCount = 0;
 	}
 
 	@Override
@@ -76,11 +83,14 @@ public class Workshop extends BasicGameState implements GameState {
 		int mouseX = container.getInput().getMouseX();
 		int mouseY = container.getInput().getMouseY();
 		//invoke any updates to the weapon(after imbue, crafting, etc)
+		if(wep!=null)
 		wep.update(container, maingame, delta);
-		//checks for the ESC key to go into the main screen
+		
 		//TODO create a door object to click to exit to go back to the main screen and use ESC to access menu instead
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
-			maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
+			((MainGame)maingame).menu.prevState = getID();
+			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
+			
 		}
 		
 		//TODO need to check for current inventory of the blacksmith for resources, then check the item about to be made
@@ -88,93 +98,73 @@ public class Workshop extends BasicGameState implements GameState {
 					//fixed: multiple clicking by changing the input from isMouseButtonDown to isMousePressed event handling
 					
 					if(craftContainer.contains(mouseX, mouseY)){
-						craft();
+						if(wep==null){
+							craft();
+							scourCount = 5;
+						}
 					}
 					if(imbueContainer.contains(mouseX, mouseY)){
-						imbue();
+						
+						if(wep != null)
+							imbue();
 					}
 					if(imbueContainer1.contains(mouseX, mouseY)){
-						scour();
-						wep.update(container, maingame, delta);
+						
+						if(wep != null){
+							scour();
+							wep.update(container, maingame, delta);
+						}
+							
 					}
 					if(imbueContainer2.contains(mouseX, mouseY)){
 						
 						//TODO implement method call for the button here
+					}
+					//checks if the workshop door is clicked, exits back to the smith's house
+					if(wsDoor.contains(mouseX, mouseY)){
+						maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
 					}
 				}
 				
 
 	}
 	
-	//helper method called to remove properties from the weapon
+	//helper method called to remove properties from the weapon, only limited to 5 charges per weapon crafted
 	private void scour(){
-		wep.removeAffixes();
+		if(scourCount > 0){
+			wep.removeAffixes();
+			scourCount--;
+		}
+			
 	}
 	
 	
 	//this helper method will add random affixes to an item which is on display
 	private void imbue(){
-		//initialize affix placeholder to prevent NullPointerException
-		Affix af =(Affix) new NoPrefix();
-		
-		int choice = rand.nextInt(4);
-		String choice_MASK="";
-		
-		//VERY IMPORTANT: keep in order to prevent our game from performing an infinite loop (do-while it has all weapon properties)
-		//for now, suffix count check is set to '> 0' since we only have one suffix, increase to 1 or 2 once you add more suffix classes
-		if(wep.prefixCount > 2 && wep.suffixCount > 0){
-			return;
-		}
-		
-		do{
-			choice = rand.nextInt(4);
-			
-			switch(choice){
-			
-			case 0:{
-				choice_MASK = "FlatPhysDamage";
-				af = flat;
-				break;
-			}case 1:{
-				choice_MASK = "PercentDamage";
-				af = perc;
-				break;
-			}case 2:{
-				choice_MASK = "ColdDamage";
-				af = cold;
-				break;
-				
-			}case 3:{
-				choice_MASK = "Accuracy";
-				af = accu;
-				break;
-			}
-			default:
-				break;
-			}
-		}while(wep.alreadyHas(choice_MASK));
-		
-		wep.addAffix(af);
+		wep.addAffix();
 				
 	}
 	
 	//helper method that will create a new weapon
 	//TODO implement resource cost checking before crafting, show an error message or a warning if cost is not met
 	private void craft() {
-		
+		wep = null;
+		wep = new Rapier();
 		renderWeapon = true;
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
+		background.draw();
 		//invokes drawing of debug lines for better button and image placement, to remove once program is live
 		g.setColor(Color.gray);
 		drawDebugLines(g,50);
 		
 		
+		
 		//draw all the buttons to the screen
-		craftButton.draw(craftContainer.getX(),craftContainer.getY());
+		//craftButton.draw(craftContainer.getX(),craftContainer.getY());
 		imbueButton2.draw(imbueContainer.getX(),imbueContainer.getY());
 		imbueButton1.draw(imbueContainer1.getX(),imbueContainer1.getY());
 		imbueButton2.draw(imbueContainer2.getX(),imbueContainer2.getY());

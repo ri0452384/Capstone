@@ -8,6 +8,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class MainGame extends StateBasedGame {
 	
+	Player smith;
+	
+	GameState gs;
+	Menu menu;
+	Mines mine;
+	Workshop ws;
 	
 	
 	public MainGame(String title) {
@@ -31,15 +37,21 @@ public class MainGame extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		
-		this.addState(new GameState());//screen id: 1
+		smith = new Player();
+		gs = new GameState(smith);
+		menu = new Menu(smith);
+		mine = new Mines();
+		ws = new Workshop(smith);
 		
-		this.addState(new GameOverState());//screen id: 0
+		this.addState(gs);//screen id: 1
 		
-		this.addState(new Menu()); //screen id: 2
+		this.addState(new GameOverState(smith));//screen id: 0
 		
-		this.addState(new Workshop()); //screen id: 3
+		this.addState(menu); //screen id: 2
+		
+		this.addState(ws); //screen id: 3
 		 
-		this.addState(new Mines()); //screen id: 4
+		this.addState(mine); //screen id: 4
 	}
 
 }

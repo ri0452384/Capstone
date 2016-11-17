@@ -27,7 +27,7 @@ public abstract class Affix{
 
 	abstract void imbue(Weapon wep);
 	
-	//abstract void imbue(Armor arm);
+	abstract void renameWeapon(Weapon wep,int fin);
 	
 	abstract String getTooltip();
 	

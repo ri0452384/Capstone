@@ -11,16 +11,17 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class GameState extends BasicGameState {
 
-	private Player smith;
-	private StaticLevel level;
+	Player smith;
+	
+	
+	GameState(Player smith){
+		this.smith = smith;
+	}
 
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		level = new StaticLevel();
-		smith = new Player(level);
-		level.init(container,maingame);
+		smith = new Player();
 		smith.init(container, maingame);
 		
 	}
@@ -28,23 +29,30 @@ public class GameState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame maingame, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		
+		
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
+			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
 		}
-		if(level.visitWorkshop(smith.playerBox)){
+		if(smith.level.visitWorkshop(smith.playerBox)){
+			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(3, new FadeOutTransition(), new FadeInTransition());
 			smith.vector.x = 525;
 			smith.vector.y = 225;
+			smith.facedown();
+			
 		}
-		if(level.visitMine(smith.playerBox)){
+		if(smith.level.visitMine(smith.playerBox,(MainGame) maingame)){
+			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(4, new FadeOutTransition(), new FadeInTransition());
+			((MainGame)maingame).mine.smith.level.refillMetals();
 			smith.vector.x = 125;
 			smith.vector.y = 125;
+			smith.facedown();
 		}
 			
 		
-		level.update(container, maingame, delta);
 		smith.update(container, maingame, delta);
 		
 	}
@@ -55,13 +63,14 @@ public class GameState extends BasicGameState {
 			throws SlickException {
 		//container.sleep(100);
 		//g.drawString("Game State",50,100);
+		smith.level.render(container,maingame,g);
 		drawDebugLines(g, 50);
 		g.setColor(Color.red);
 		g.drawString("Workshop DOOR", 500, 150);
 		g.setColor(Color.blue);
 		g.drawString("To the Mines", 100,50);
 		smith.render(container,maingame,g);
-		level.render(container,maingame,g);
+		
 	}
 	
 	//helper method that generates the grid lines

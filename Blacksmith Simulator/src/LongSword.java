@@ -1,64 +1,50 @@
-
-
-import java.util.ArrayList;
-import java.util.Random;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-/*
- * one of the weapon classes to be implemented in the game. 
- * The Short Sword is the most basic of weapons carried by any hero or adventurer on the start of their adventure.
- * Without any magical properties, it hits for 3-6 damage.
- * 
- */
 
-public class ShortSword extends Weapon {
-	
-	 
-	
-	ShortSword(){
+
+public class LongSword extends Weapon {
+
+	LongSword(){
 		
-		super(3,6,"Short Sword",450,150);
+		super(9,21,"Long Sword",450,150);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
 				"Song","Spike","Spiker","Stinger","Thirst"};
-		
 	}
 	
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		
-		
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
-	public void update(GameContainer container, StateBasedGame maingame, int delta)
-			throws SlickException {
-		this.toString();
-	}
-	
-	@Override
-	public void render(GameContainer container, StateBasedGame maingame,Graphics g) {
+	public void render(GameContainer container, StateBasedGame maingame,
+			Graphics g) {
 		try {
 			g.setColor(textColor);
 			g.drawString(this.name(),x,y+50);
 			g.setColor(Color.white);
 			g.drawString(this.toString(), x, y+52);
-			g.drawImage(new Image("Images/ShortSword.png"), x+150, y-150);
+			g.drawImage(new Image("Images/LongSword.png"), x+150, y-150);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
-	
-		
+
+	@Override
+	public void update(GameContainer container, StateBasedGame maingame,
+			int delta) throws SlickException {
+		this.toString();
+
+	}
 
 }

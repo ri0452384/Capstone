@@ -3,18 +3,16 @@ import java.util.Random;
 import org.newdawn.slick.Color;
 
 
-public class Accuracy extends Suffix {
+public class AttackSpeed extends Suffix {
 	private int minAdd;
 	private int maxAdd;
-	private static final String[] possibleSuffixes = new String[] {" of Calm"," of Steadiness"," of Accuracy"
-		," of Precision"," of the Sniper"," of the Marksman"," of the Deadeye"," of the Ranger"};
+	private static final String[] possibleSuffixes = new String[] {" of Skill"," of Ease"," of Mastery"
+		," of Renown"," of Acclaim"," of Fame"," of Infamy"," of Celebration"};
 	
-	Accuracy(){
+	AttackSpeed(){
 		super();
-		this.setAffixName("Accuracy");
+		this.setAffixName("AttackSpeed");
 	}
-	
-	
 	
 	@Override
 	void imbue(Weapon wep) {
@@ -26,35 +24,35 @@ public class Accuracy extends Suffix {
 		switch(fin){
 			case 0:{
 				minAdd = 5;
-				maxAdd = 15;
+				maxAdd = 7;
 				break;
 			}case 1:{
-				minAdd = 16;
-				maxAdd = 60;
+				minAdd = 8;
+				maxAdd = 10;
 				break;
 			}case 2:{
-				minAdd = 61;
-				maxAdd = 100;
+				minAdd = 11;
+				maxAdd = 13;
 				break;
 			}case 3:{
-				minAdd = 101;
-				maxAdd = 130;
+				minAdd = 14;
+				maxAdd = 16;
 				break;
 			}case 4:{
-				minAdd = 131;
-				maxAdd = 165;
+				minAdd = 17;
+				maxAdd = 19;
 				break;
 			}case 5:{
-				minAdd = 166;
-				maxAdd = 200;
+				minAdd = 20;
+				maxAdd = 22;
 				break;
 			}case 6:{
-				minAdd = 201;
-				maxAdd = 250;
+				minAdd = 23;
+				maxAdd = 25;
 				break;
 			}case 7:{
-				minAdd = 251;
-				maxAdd = 320;
+				minAdd = 26;
+				maxAdd = 29;
 				break;
 			}
 			default:{
@@ -67,18 +65,19 @@ public class Accuracy extends Suffix {
 		
 		
 		minAdd = minAdd + selector.nextInt(maxAdd-minAdd);
-		
-		this.setTooltip("\nAdds "+minAdd +" accuracy rating");
-		wep.weaponText += this.getTooltip();
 		if(! wep.isRare())
 			renameWeapon(wep,fin);
-		//wep.suffixCount++;
+		this.setTooltip("\n"+minAdd +"% faster attack speed");
+		wep.weaponText += this.getTooltip();
 		System.out.println(wep);
+		//wep.suffixCount++;
 	}
 
-	void renameWeapon(Weapon wep,int fin){
+	@Override
+	void renameWeapon(Weapon wep, int fin) {
 			wep.setName(wep.getName()+ possibleSuffixes[fin]);
 			wep.textColor = Color.blue;
 	}
+	
 	
 }

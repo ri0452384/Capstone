@@ -3,15 +3,15 @@ import java.util.Random;
 import org.newdawn.slick.Color;
 
 
-public class ColdDamage extends Prefix {
+public class FireDamage extends Prefix {
 	private int minAdd;
 	private int maxAdd;
-	private static final String[] possiblePrefixes = new String[] {"Frosted","Chilled","Icy"
-		,"Frigid","Freezing","Frozen","Glaciated","Polar","Entombing"};
+	private static final String[] possiblePrefixes = new String[] {"Heated","Smoldering","Smoking"
+		,"Burning","Flaming","Scorching","Incinerating","Blasting","Cremating"};
 	
-	ColdDamage(){
+	FireDamage(){
 		super();
-		this.setAffixName("ColdDamage");
+		this.setAffixName("FireDamage");
 	}
 	
 	@Override
@@ -23,40 +23,40 @@ public class ColdDamage extends Prefix {
 		
 		switch(fin){
 			case 0:{
-				minAdd = 1;
-				maxAdd = 3;
+				minAdd = 3;
+				maxAdd = 6;
 				break;
 			}case 1:{
-				minAdd = 6;
-				maxAdd = 15;
+				minAdd = 12;
+				maxAdd = 27;
 				break;
 			}case 2:{
-				minAdd = 10;
-				maxAdd = 23;
+				minAdd = 18;
+				maxAdd = 42;
 				break;
 			}case 3:{
-				minAdd = 14;
-				maxAdd = 32;
+				minAdd = 25;
+				maxAdd = 59;
 				break;
 			}case 4:{
-				minAdd = 17;
-				maxAdd = 40;
+				minAdd = 32;
+				maxAdd = 74;
 				break;
 			}case 5:{
-				minAdd = 22;
-				maxAdd = 50;
+				minAdd = 40;
+				maxAdd = 92;
 				break;
 			}case 6:{
-				minAdd = 26;
-				maxAdd = 60;
+				minAdd = 48;
+				maxAdd = 111;
 				break;
 			}case 7:{
-				minAdd = 31;
-				maxAdd = 73;
+				minAdd = 58;
+				maxAdd = 134;
 				break;
 			}case 8:{
-				minAdd = 37;
-				maxAdd = 87;
+				minAdd = 68;
+				maxAdd = 160;
 				break;
 			}
 			default:{
@@ -72,12 +72,11 @@ public class ColdDamage extends Prefix {
 		wep.setMaxPhysDamage(wep.getMaxEleDamage() + maxAdd);
 		
 		
-		this.setTooltip("\nAdds "+minAdd + " - " + maxAdd +" cold damage");
+		this.setTooltip("\nAdds "+minAdd + " - " + maxAdd +" fire damage");
 		wep.weaponText += this.getTooltip();
 		if(! wep.isRare())
 		renameWeapon(wep,fin);
 		System.out.println(wep);
-		//wep.prefixCount++;
 	}
 
 	@Override

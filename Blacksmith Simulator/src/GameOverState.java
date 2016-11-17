@@ -6,6 +6,12 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 public class GameOverState extends BasicGameState {
+	
+	private Player smith;
+	
+	GameOverState(Player smith){
+		this.smith = smith;
+	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
