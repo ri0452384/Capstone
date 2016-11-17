@@ -71,20 +71,30 @@ void imbue(Weapon wep) {
 		}
 		
 	}
-	wep.setName(possiblePrefixes[fin] +" "+ wep.getName());
+	
 	
 	multiplier = 100 + minAdd + selector.nextInt(maxAdd-minAdd);
 	
-	this.setTooltip("\n"+(multiplier - 100)+"% " + "increased physical damage");
-	System.out.println(multiplier);
+	
+	
+	
 	wep.setMinPhysDamage((int)(wep.getMinPhysDamage() *(multiplier))/100);
 	wep.setMaxPhysDamage((int)(wep.getMaxPhysDamage() *(multiplier))/100);
-	wep.textColor = Color.blue;
 	wep.damageText = "\nDamage: " + wep.getMinPhysDamage() +" - " + wep.getMaxPhysDamage();
+	this.setTooltip("\n"+(multiplier - 100)+"% " + "increased physical damage");
 	wep.weaponText += this.getTooltip();
+	if(! wep.isRare())
+		renameWeapon(wep,fin);
 	System.out.println(wep);
+	//wep.prefixCount++;
+}
+
+
+@Override
+void renameWeapon(Weapon wep, int fin) {
 	
-	
+		wep.setName(possiblePrefixes[fin] +" "+ wep.getName());
+		wep.textColor = Color.blue;
 }
 
 }

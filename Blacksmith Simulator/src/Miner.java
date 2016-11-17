@@ -2,70 +2,77 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
-public class Player {
+public class Miner {
 
 	// animation variables for the player
 	private Animation leftAnimation;
 	private Animation rightAnimation;
 	private Animation upAnimation;
 	private Animation downAnimation;
-	protected Animation currentAnimation;
+	private Animation currentAnimation;
 
-	private SpriteSheet upSprite;
+	MineLevel level;
 	private SpriteSheet downSprite;
+	private SpriteSheet upSprite;
 	private SpriteSheet leftSprite;
 	private SpriteSheet rightSprite;
-	protected Vector2f vector;
 
-	// used for collision testing
 	protected Shape playerBox;
-	HouseLevel level;
-	// private int iterations;
+
 	protected float vX;
 	protected float vY;
-	
-	int mineTimer;
 
-	public Player() throws SlickException {
+	protected Vector2f vector;
 
-		downSprite = new SpriteSheet("/Images/downSprite.png", 57, 59);
-		upSprite = new SpriteSheet("Images/upSprite.png", 57, 59);
-		leftSprite = new SpriteSheet("Images/leftSprite.png", 57, 56);
-		rightSprite = new SpriteSheet("Images/rightSprite.png", 57, 59);
-		level = new HouseLevel();
+	public Miner() throws SlickException {
+		downSprite = new SpriteSheet("/Images/downSprite.png", 32, 32);
+		upSprite = new SpriteSheet("Images/upSprite.png", 32, 32);
+		leftSprite = new SpriteSheet("Images/leftSprite.png", 32, 32);
+		rightSprite = new SpriteSheet("Images/rightSprite.png", 32, 32);
 
-	}
-
-	public void init(GameContainer container, StateBasedGame maingame)
-			throws SlickException {
-
+		level = new MineLevel();
 		vector = new Vector2f();
-		vector.set(400, 300);
-		vX = 10;
-		vY = 10;
-		level.init(container, maingame);
+
+		vector.x = 700;
+		vector.y = 450;
+
 		downAnimation = new Animation(downSprite, 100);
 		upAnimation = new Animation(upSprite, 100);
 		leftAnimation = new Animation(leftSprite, 100);
 		rightAnimation = new Animation(rightSprite, 100);
 		currentAnimation = downAnimation;
-		playerBox = new Rectangle(vector.x, vector.y, downAnimation
+		playerBox = new Rectangle((int) vector.x, (int) vector.y, downAnimation
 				.getCurrentFrame().getWidth(), downAnimation.getCurrentFrame()
 				.getHeight());
-		mineTimer = 0;
+
 	}
 
-	private void houseCollisionTest(GameContainer container, int delta) {
+	public void init(GameContainer container, StateBasedGame maingame)
+			throws SlickException {
+		level.init(container, maingame);
+	}
+
+	public void render(GameContainer container, StateBasedGame maingame,
+			Graphics g) throws SlickException {
+		level.render(container,maingame,g);
+		container.sleep(50);
+		g.setColor(Color.green);
+		//currentAnimation.draw(playerBox.getX(), playerBox.getY());
+		g.draw(playerBox);
+		g.drawImage(new Image("Images/miner.png"), vector.x, vector.y);
+	}
+
+	private void mineCollisionTest(GameContainer container, int delta) {
 		if (container.getInput().isKeyDown(Input.KEY_UP)
 				|| container.getInput().isKeyDown(Input.KEY_UP)) {
 			vector.y -= vY;
@@ -135,34 +142,32 @@ public class Player {
 
 	public void update(GameContainer container, StateBasedGame maingame,
 			int delta) throws SlickException {
-		
-			mineTimer += delta;
-		
-		if(mineTimer >= 25000){
-			level.mineOpen = true;
-			level.mineDoor = new Polygon(new float[]{100,25,
-					100,100,
-					250,100,
-					250,25});
+		level.update(container,maingame,delta);
+		mineCollisionTest(container, delta);
+		tunnelCollisionTest(container,delta);
+		this.level.metalCollisionTest(playerBox,(MainGame) maingame);
+	}
+	
+	
+	
+	private void tunnelCollisionTest(GameContainer container,int delta){
+		//TODO insert super mario tunnel sound or something for the lulz
+		if(level.atLowerTunnel(playerBox)){
+			vector.x = 165;
+			vector.y = 	40;
+			container.sleep(1000);
+		}
+		else if(level.atUpperTunnel(playerBox)){
+			vector.x = 710;
+			vector.y = 45;
+			container.sleep(1000);
+			
 		}
 		
-		houseCollisionTest(container, delta);
-
+		playerBox.setLocation(vector);
+		
 	}
-
-	public void render(GameContainer container, StateBasedGame maingame,
-			Graphics g) throws SlickException {
-
-		container.sleep(50);
-		g.setColor(Color.green);
-		currentAnimation.draw(playerBox.getX(), playerBox.getY());
-	}
-
-	public void facedown() {
-		currentAnimation = downAnimation;
-		currentAnimation.start();
-		currentAnimation.stop();
-
-	}
+	
+	
 
 }

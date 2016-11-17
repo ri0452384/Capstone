@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -10,12 +13,26 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
 public class Menu extends BasicGameState implements GameState {
+	
+	
+	private Player smith;
+	protected int prevState;
+	int ironCount;
+	int logCount;
+
+	
+	
+	Menu(Player smith){
+		this.smith = smith;
+		
+	}
 
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		// TODO Auto-generated method stub
-
+			prevState = 1;
+			ironCount = 0;
+			logCount = 0;
 	}
 	
 	
@@ -23,7 +40,7 @@ public class Menu extends BasicGameState implements GameState {
 	public void update(GameContainer container, StateBasedGame maingame, int delta)
 			throws SlickException {
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
-			maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
+			maingame.enterState(prevState,new FadeOutTransition(), new FadeInTransition());
 		}
 
 	}
@@ -31,8 +48,9 @@ public class Menu extends BasicGameState implements GameState {
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		g.drawString("Menu", 50,200);
+		g.drawString("Iron: "+ironCount,50,200);
+		g.drawString("Logs: "+logCount,50,100);
+		g.drawString("made by Codeneira, Ingles, Mañus, and Tolipas of OGTP Games \nAll rights reserved 2016\n OGTP is an independent software company formed only for CMSC 22.", 200,520);
 
 	}
 

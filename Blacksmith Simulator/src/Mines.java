@@ -1,3 +1,5 @@
+
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -9,12 +11,17 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 
 public class Mines extends BasicGameState {
-
+	
+	
+	Miner smith;
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
-		// TODO Auto-generated method stub
-
+		smith = new Miner();
+		smith.init(container, maingame);
+		
+		
 	}
 
 	
@@ -23,22 +30,29 @@ public class Mines extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame maingame, int delta)
 			throws SlickException {
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
-			maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
+			((MainGame)maingame).menu.prevState = getID();
+			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
+			
 		}
-
+		if(smith.level.exitMine(smith.playerBox)){
+			maingame.enterState(1,new FadeOutTransition(),new FadeInTransition());
+			smith.vector.x = 700;
+			smith.vector.y = 450;
+		}
+		smith.update(container, maingame, delta);
 	}
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		g.drawString("The Mines", 100,50);
-
+		smith.render(container, maingame, g);
+		g.setColor(Color.white);
+		g.drawString("Tip: Use arrow keys to move around and pick up the resources in the mine.", 75, 580);
+		
 	}
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 4;
 	}
 
