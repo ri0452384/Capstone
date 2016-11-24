@@ -7,6 +7,7 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameOverState extends BasicGameState {
 	
+	@SuppressWarnings("unused")
 	private Player smith;
 	
 	GameOverState(Player smith){

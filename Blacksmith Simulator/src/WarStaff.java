@@ -1,30 +1,21 @@
-
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
-/*
- * one of the weapon classes to be implemented in the game. 
- * The Short Sword is the most basic of weapons carried by any hero or adventurer on the start of their adventure.
- * Without any magical properties, it hits for 3-6 damage.
- * 
- */
 
-public class ShortSword extends Weapon {
-	
-	 
-	
-	ShortSword(){
+
+public class WarStaff extends Weapon {
+
+	WarStaff(){
 		
-		super(3,6,"Short Sword",200,150);
+		super(6,37,"War Staff",100,150);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
-		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
-				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
-				"Song","Spike","Spiker","Stinger","Thirst"};
-		logCost = 1;
+		possibleRareSuffixes  = new String[]{"Bane","Beam","Branch","Call","Chant","Cry",
+				"Gnarl","Goad","Mast","Pile","Pillar","Pole","Post","Roar","Song","Spell","Spire",
+				"Weaver"};
+		logCost = 5;
 		ironCost = 2;
 		
 	}
@@ -47,15 +38,12 @@ public class ShortSword extends Weapon {
 		super.render(container,maingame,g);
 		try {
 			
-			g.drawImage(new Image("shortsword.png"), x, y);
+			g.drawImage(new Image("warstaff.png"), x, y);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-	
-	
-		
 
 }

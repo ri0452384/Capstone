@@ -10,7 +10,6 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
 public class Player {
 
@@ -38,10 +37,10 @@ public class Player {
 
 	public Player() throws SlickException {
 
-		downSprite = new SpriteSheet("/Images/downSprite.png", 57, 59);
-		upSprite = new SpriteSheet("Images/upSprite.png", 57, 59);
-		leftSprite = new SpriteSheet("Images/leftSprite.png", 57, 56);
-		rightSprite = new SpriteSheet("Images/rightSprite.png", 57, 59);
+		downSprite = new SpriteSheet("downSprite.png", 57, 59);
+		upSprite = new SpriteSheet("upSprite.png", 57, 59);
+		leftSprite = new SpriteSheet("leftSprite.png", 57, 56);
+		rightSprite = new SpriteSheet("rightSprite.png", 57, 59);
 		level = new HouseLevel();
 
 	}

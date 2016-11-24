@@ -59,7 +59,7 @@ public class CriticalChance extends Suffix {
 		minAdd = minAdd + selector.nextInt(maxAdd-minAdd);
 		
 		
-		this.setTooltip("\nAdds "+minAdd +" % more critical strike chance");
+		this.setTooltip("\nadds "+minAdd +" % critical strike chance");
 		wep.weaponText += this.getTooltip();
 		if(! wep.isRare())
 			renameWeapon(wep,fin);

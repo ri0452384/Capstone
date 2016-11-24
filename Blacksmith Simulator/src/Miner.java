@@ -10,7 +10,6 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.tiled.TiledMap;
 
 public class Miner {
 
@@ -35,10 +34,10 @@ public class Miner {
 	protected Vector2f vector;
 
 	public Miner() throws SlickException {
-		downSprite = new SpriteSheet("/Images/downSprite.png", 32, 32);
-		upSprite = new SpriteSheet("Images/upSprite.png", 32, 32);
-		leftSprite = new SpriteSheet("Images/leftSprite.png", 32, 32);
-		rightSprite = new SpriteSheet("Images/rightSprite.png", 32, 32);
+		downSprite = new SpriteSheet("downSprite.png", 32, 32);
+		upSprite = new SpriteSheet("upSprite.png", 32, 32);
+		leftSprite = new SpriteSheet("leftSprite.png", 32, 32);
+		rightSprite = new SpriteSheet("rightSprite.png", 32, 32);
 
 		level = new MineLevel();
 		vector = new Vector2f();
@@ -69,7 +68,7 @@ public class Miner {
 		g.setColor(Color.green);
 		//currentAnimation.draw(playerBox.getX(), playerBox.getY());
 		g.draw(playerBox);
-		g.drawImage(new Image("Images/miner.png"), vector.x, vector.y);
+		g.drawImage(new Image("miner.png"), vector.x, vector.y);
 	}
 
 	private void mineCollisionTest(GameContainer container, int delta) {

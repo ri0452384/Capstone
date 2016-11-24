@@ -6,19 +6,18 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 
-public class LongSword extends Weapon {
-
-	LongSword(){
-		
-		super(9,21,"Long Sword",100,150);
-		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
-		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
-				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
-				"Song","Spike","Spiker","Stinger","Thirst"};
-		logCost = 1;
-		ironCost = 3;
-	}
+public class DoubleAxe extends Weapon {
 	
+	DoubleAxe(){
+		super(11,19,"Double Axe",100,150);
+		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
+		possibleRareSuffixes  = new String[]{"Bane","Beak","Bite","Butcher","Edge","Etcher","Gnash",
+			"Hunger","Mangler","Rend","Roar","Sever","Slayer","Song","Spawn","Splitter","Sunder",
+			"Thirst"};
+		logCost = 3;
+		ironCost = 2;
+	}
+
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
@@ -32,7 +31,7 @@ public class LongSword extends Weapon {
 		super.render(container,maingame,g);
 		try {
 			
-			g.drawImage(new Image("longsword.png"), x, y);
+			g.drawImage(new Image("doubleaxe.png"), x, y);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

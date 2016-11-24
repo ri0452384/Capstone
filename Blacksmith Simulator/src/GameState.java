@@ -43,6 +43,14 @@ public class GameState extends BasicGameState {
 			smith.facedown();
 			
 		}
+		if(smith.level.visitNotDoor(smith.playerBox)){
+			((MainGame)maingame).menu.prevState = getID();
+			maingame.enterState(5, new FadeOutTransition(), new FadeInTransition());
+			smith.vector.x = 525;
+			smith.vector.y = 225;
+			smith.facedown();
+			
+		}
 		if(smith.level.visitMine(smith.playerBox,(MainGame) maingame)){
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(4, new FadeOutTransition(), new FadeInTransition());
@@ -66,9 +74,9 @@ public class GameState extends BasicGameState {
 		smith.level.render(container,maingame,g);
 		drawDebugLines(g, 50);
 		g.setColor(Color.red);
-		g.drawString("Workshop DOOR", 500, 150);
+		//g.drawString("Workshop DOOR", 500, 150);
 		g.setColor(Color.blue);
-		g.drawString("To the Mines", 100,50);
+		//g.drawString("To the Mines", 100,50);
 		smith.render(container,maingame,g);
 		
 	}

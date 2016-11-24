@@ -13,6 +13,7 @@ public class HouseLevel extends StaticLevel {
 	
 private Shape workshopDoor;
 Shape mineDoor;
+Shape notDoor;
 private Image background;
 boolean mineOpen;
 
@@ -28,8 +29,9 @@ boolean mineOpen;
 		levelBase = new Polygon(polygonPoints);
 		
 		mineDoor = new Polygon(new float[]{100,25,	250,25});
-		workshopDoor = new Rectangle(500, 100, 150, 100);
-		background = new Image("Images/house.png");
+		notDoor = new Rectangle(500, 100, 150, 100);
+		workshopDoor = new Rectangle(700,350,50,100);
+		background = new Image("house.png");
 		mineOpen=false;
 		}
 	
@@ -49,9 +51,14 @@ boolean mineOpen;
 		g.setColor(Color.cyan);
 		//g.draw(levelBase);
 		g.draw(workshopDoor);
+		g.draw(notDoor);
 		if(mineOpen){
 			g.draw(mineDoor);
 		}
+	}
+	
+	public boolean visitNotDoor(Shape player){
+		return notDoor.intersects(player);
 	}
 	
 	public boolean visitWorkshop(Shape player){

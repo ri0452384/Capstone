@@ -2,7 +2,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Image;
 
@@ -18,7 +17,7 @@ public class Log extends Resource {
 		super.name = "log";
 		visibility = true;
 		try {
-			resourceForm = new Image("Images/log.png");
+			resourceForm = new Image("log.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

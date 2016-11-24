@@ -41,11 +41,7 @@ public abstract class Weapon {
 	 	PercentDamage perc;
 		ReduceArmor redarm;
 		
-		
-		
 		Random rand;
-	 
-	 
 	
 	protected Color textColor;
 	//base values of a weapon, useful for scouring and percent based damage
@@ -76,7 +72,8 @@ public abstract class Weapon {
 	private String name;
 	
 	//crafting cost of the weapon will be in terms of metal ores
-	Resource craftingCost;
+	int logCost;
+	int ironCost;
 	
 	//selling price of the weapon must be dependent on damage, and other magical properties
 	double sellPrice;
@@ -151,7 +148,12 @@ public abstract class Weapon {
 	
 	public abstract void init(GameContainer arg0, StateBasedGame arg1)	throws SlickException;
 	
-	public abstract void render(GameContainer container, StateBasedGame maingame, Graphics g);
+	public void render(GameContainer container, StateBasedGame maingame, Graphics g){
+		g.setColor(textColor);
+		g.drawString(this.name(),425,200);
+		g.setColor(Color.white);
+		g.drawString(this.toString(), 425, 202);
+	}
 	
 	public abstract void update(GameContainer container, StateBasedGame maingame, int delta)throws SlickException;
 	

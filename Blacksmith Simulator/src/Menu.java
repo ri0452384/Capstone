@@ -1,6 +1,4 @@
 
-import java.util.ArrayList;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -15,11 +13,13 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 public class Menu extends BasicGameState implements GameState {
 	
 	
+	@SuppressWarnings("unused")
 	private Player smith;
 	protected int prevState;
 	int ironCount;
 	int logCount;
-
+	//coin of the realm
+	int coins;
 	
 	
 	Menu(Player smith){
@@ -33,6 +33,7 @@ public class Menu extends BasicGameState implements GameState {
 			prevState = 1;
 			ironCount = 0;
 			logCount = 0;
+			coins = 0;
 	}
 	
 	
@@ -51,7 +52,7 @@ public class Menu extends BasicGameState implements GameState {
 		g.drawString("Iron: "+ironCount,50,200);
 		g.drawString("Logs: "+logCount,50,100);
 		g.drawString("made by Codeneira, Ingles, Mañus, and Tolipas of OGTP Games \nAll rights reserved 2016\n OGTP is an independent software company formed only for CMSC 22.", 200,520);
-
+		g.drawString("Coins: "+coins,50,300);
 	}
 
 	

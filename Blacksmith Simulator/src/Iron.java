@@ -2,7 +2,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Image;
 
@@ -18,7 +17,7 @@ public class Iron extends Resource {
 		super.name = "iron";
 		visibility = true;
 		try {
-			resourceForm = new Image("Images/iron.png");
+			resourceForm = new Image("iron.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
