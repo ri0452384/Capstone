@@ -45,7 +45,7 @@ public class Workshop extends BasicGameState implements GameState {
 	private Image background;
 	//weapons to be available for crafting
 	ArrayList<Weapon> craftChoices;
-	Shape[] craftRectangles;
+	ArrayList<Rectangle> craftRectangles;
 	//weapon to be displayed in the workshop
 	Weapon wep;
 	private boolean renderWeapon;
@@ -58,8 +58,9 @@ public class Workshop extends BasicGameState implements GameState {
 	}
 	
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
+		
 		//now is located in the anvil object inside the workshop
 		craftContainer = new Rectangle(665, 433, 170, 80);
 		//rune for the imbue method, which adds a random prefix/suffix to the weapon
@@ -75,21 +76,30 @@ public class Workshop extends BasicGameState implements GameState {
 		craftChoices = new ArrayList<Weapon>();
 		background = new Image("workshop.jpg");
 		choice=-1;
-		craftRectangles = new Rectangle[5];
+		craftRectangles = new ArrayList<Rectangle>();
 		//do not display the weapon at start
 		renderWeapon = false;
 		//you only have 5 chances to scour any crafted weapon, is set only after crafting
 		scourCount = 0;
+		
+	}
+
+	protected void generateCraftRectangles() {
 		int row=50;
 		for(int i=0;i<5;i++){
-			craftRectangles[i] = new Rectangle(row,550,125, 25);
+			craftRectangles.add(new Rectangle(row,550,125, 25));
 			row += 150;
 		}
+		
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame maingame, int delta)
 			throws SlickException {
+		
+		//unlimited resources cheat. remove comments to enable, recommended in developer mode/testing
+		//((MainGame)maingame).menu.ironCount +=5;
+		//((MainGame)maingame).menu.logCount +=5;
 		craftChoices = ((MainGame)maingame).notice.requests;
 		//get the coordinates of the mouse cursor every update
 		int mouseX = container.getInput().getMouseX();
@@ -110,9 +120,10 @@ public class Workshop extends BasicGameState implements GameState {
 					//fixed: multiple clicking by changing the input from isMouseButtonDown to isMousePressed event handling
 					
 					if(craftContainer.contains(mouseX, mouseY)){
-						
+						if(!craftRectangles.isEmpty() || wep!=null){
 							craft((MainGame)maingame);
 							scourCount = 5;
+						}
 						
 					}
 					if(imbueContainer.contains(mouseX, mouseY)){
@@ -130,27 +141,34 @@ public class Workshop extends BasicGameState implements GameState {
 					}
 					if(imbueContainer2.contains(mouseX, mouseY)){
 						
-						//TODO implement method call for the button here
+						if(wep != null){
+							sell(maingame);
+						}
 					}
 					//checks if the workshop door is clicked, exits back to the smith's house
 					if(wsDoor.contains(mouseX, mouseY)){
 						maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
 					}
-					for(int i=0;i<5;i++)
+					int i=0;
+					for(Rectangle rec:craftRectangles)
 					{	
-						if(craftRectangles[i] ==null){
+						if(rec ==null){
 							
-						}else if(craftRectangles[i].contains(mouseX, mouseY)){
-							choice = i;
-							if(((MainGame)maingame).menu.logCount >= craftChoices.get(i).logCost 
-									&& ((MainGame)maingame).menu.ironCount >= craftChoices.get(i).ironCost){
+						}else if(rec.contains(mouseX, mouseY) ){
+							
+							//if(((MainGame)maingame).menu.logCount >= craftChoices.get(i).logCost 
+									//&& ((MainGame)maingame).menu.ironCount >= craftChoices.get(i).ironCost){
 								//renderWeapon = true;
+								choice = i;
 								wep = craftChoices.get(i);
 								//craftChoices.remove(i);
-							}
+							//}
 						}
+						i++;
 					}
 				}
+				
+				//to keep the mine timer open
 				((MainGame)maingame).gs.smith.mineTimer += delta;
 				
 				if(((MainGame)maingame).gs.smith.mineTimer >= 25000){
@@ -163,6 +181,14 @@ public class Workshop extends BasicGameState implements GameState {
 
 	}
 	
+	private void sell(StateBasedGame maingame) {
+		((MainGame)maingame).menu.coins += wep.sellPrice;
+		craftChoices.remove(choice);
+		craftRectangles.remove(choice);
+		renderWeapon = false;
+		wep = null;
+	}
+
 	//helper method called to remove properties from the weapon, only limited to 5 charges per weapon crafted
 	private void scour(){
 		if(scourCount > 0){
@@ -181,10 +207,8 @@ public class Workshop extends BasicGameState implements GameState {
 	//helper method that will create a new weapon
 	//TODO implement resource cost checking before crafting, show an error message or a warning if cost is not met
 	private void craft(MainGame maingame) {
-		if(wep==null)
-			return;
-		if(choice == -1){
-			//do nothing
+		
+		if(wep==null || choice == -1){
 			return;
 		}else{
 			wep=craftChoices.get(choice);
@@ -198,6 +222,7 @@ public class Workshop extends BasicGameState implements GameState {
 		
 			
 	}
+
 	
 	
 
@@ -215,8 +240,8 @@ public class Workshop extends BasicGameState implements GameState {
 		for(Weapon w: craftChoices){
 			
 			if(w!=null){
-				if(!renderWeapon){
-					g.drawString(w.BASE_NAME, craftRectangles[i].getMinX() + 10, 550);
+				if(!renderWeapon && craftRectangles.get(i) != null){
+					g.drawString(w.BASE_NAME, craftRectangles.get(i).getMinX() + 10, 550);
 					// g.draw(craftRectangles[i]);
 					 i++;
 				}
@@ -242,9 +267,9 @@ public class Workshop extends BasicGameState implements GameState {
 		}
 	}
 
-	@SuppressWarnings("unused")
+	
 	private void drawDebugLines(Graphics g, int size){
-		int resolution = 800;
+	int resolution = 800;
 		g.setColor(Color.darkGray);
 		for(int i=0; i<resolution; i+=size){
 			g.drawLine(i,0,i,resolution);

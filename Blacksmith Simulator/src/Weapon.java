@@ -79,7 +79,7 @@ public abstract class Weapon {
 	double sellPrice;
 	
 	//constructor requires minimum dmg, max dmg, weapon name, and x, y coordinates where they can be displayed once crafted
-	Weapon(int minimum, int maximum,String name,int x, int y){
+	Weapon(int minimum, int maximum,String name){
 		BASE_NAME = name;
 		BASE_MIN = minimum;
 		BASE_MAX = maximum;
@@ -90,7 +90,8 @@ public abstract class Weapon {
 		this.name = name;
 		this.weaponText = "\n-------------";
 		this.damageText = "";
-		
+		x = 125;
+		y = 150;
 		prefixes = new Prefix[3];
 		suffixes = new Suffix[3];
 		isRare = false;
@@ -99,8 +100,6 @@ public abstract class Weapon {
 		prefixCount = 0;
 		suffixCount = 0;
 		
-		this.x = x;
-		this.y = y;
 		pre = new ArrayList<Prefix>();
 		suf = new ArrayList<Suffix>();
 		resetPossibleAffixes();

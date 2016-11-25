@@ -10,7 +10,7 @@ public class EmeraldLance extends Weapon {
 
 	EmeraldLance(){
 		
-		super(25,34,"Emerald Lance",100,150);
+		super(25,34,"Emerald Lance");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

@@ -10,7 +10,7 @@ public class Javelin extends Weapon {
 
 	Javelin(){
 		
-		super(25,34,"Javelin",100,150);
+		super(25,34,"Javelin");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

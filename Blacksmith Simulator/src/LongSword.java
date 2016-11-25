@@ -10,7 +10,7 @@ public class LongSword extends Weapon {
 
 	LongSword(){
 		
-		super(9,21,"Long Sword",100,150);
+		super(9,21,"Long Sword");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

@@ -10,7 +10,7 @@ public class WarStaff extends Weapon {
 
 	WarStaff(){
 		
-		super(6,37,"War Staff",100,150);
+		super(6,37,"War Staff");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Beam","Branch","Call","Chant","Cry",
 				"Gnarl","Goad","Mast","Pile","Pillar","Pole","Post","Roar","Song","Spell","Spire",

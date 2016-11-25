@@ -9,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Rapier extends Weapon {
 	Rapier(){
 		
-		super(7,16,"Rapier",100,150);
+		super(7,16,"Rapier");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

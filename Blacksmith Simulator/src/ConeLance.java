@@ -10,7 +10,7 @@ public class ConeLance extends Weapon {
 
 	ConeLance(){
 		
-		super(19,27,"Cone Lance",100,150);
+		super(19,27,"Cone Lance");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

@@ -32,20 +32,26 @@ public class NoticeBoard extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		exitDoor = new Rectangle(600,400,125,25);
+		exitDoor = new Rectangle(400,500,240,20);
 		requests = new ArrayList<Weapon>();
 		possibleWeapons = new ArrayList<Weapon>();
 		loadWeapons();
+		//generates random weapon requests
+		populateList(maingame);
+		background = new Image("noticeboard.png");
+		scroll = new Image("scroll.png");
 		
+		
+	}
+
+	private void populateList(StateBasedGame maingame) {
 		for(int i = 0;i<5;i++){	
 			int choice = (int)(Math.random() * possibleWeapons.size());
 			requests.add(possibleWeapons.get(choice));
 			possibleWeapons.remove(choice);
 		}
-		background = new Image("noticeboard.png");
-		scroll = new Image("scroll.png");
-		
+		//generates the craft rectangles from workshop again
+		((MainGame)maingame).ws.generateCraftRectangles();
 		
 	}
 
@@ -82,7 +88,14 @@ public class NoticeBoard extends BasicGameState {
 			g.drawString(wep.name(),75,col);
 			col +=30;
 		}
+		//weapon text details
+		
+		
+		//exitdoor details
+		g.drawString("*Step away from the board*",exitDoor.getMinX(),exitDoor.getMinY());
 		g.draw(exitDoor);
+		g.setColor(Color.cyan);
+		g.drawString("Tip: To go to your house, step away from the noticeboard.", 75, 580);
 		
 	}
 
@@ -102,7 +115,7 @@ public class NoticeBoard extends BasicGameState {
 				maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
 				}
 			}
-			
+		//to allow the mine timer to continue
 		((MainGame)maingame).gs.smith.mineTimer += delta;
 		
 		if(((MainGame)maingame).gs.smith.mineTimer >= 25000){
@@ -111,6 +124,10 @@ public class NoticeBoard extends BasicGameState {
 					100,100,
 					250,100,
 					250,25});
+		}
+		
+		if(requests.isEmpty()){
+			populateList(maingame);
 		}
 		
 		

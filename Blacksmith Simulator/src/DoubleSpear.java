@@ -10,7 +10,7 @@ public class DoubleSpear extends Weapon {
 
 	DoubleSpear(){
 		
-		super(25,34,"Double Spear",100,150);
+		super(25,34,"Double Spear");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

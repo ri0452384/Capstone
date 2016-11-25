@@ -9,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class DoubleAxe extends Weapon {
 	
 	DoubleAxe(){
-		super(11,19,"Double Axe",100,150);
+		super(11,19,"Double Axe");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Beak","Bite","Butcher","Edge","Etcher","Gnash",
 			"Hunger","Mangler","Rend","Roar","Sever","Slayer","Song","Spawn","Splitter","Sunder",

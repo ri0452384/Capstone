@@ -19,7 +19,7 @@ public class ShortSword extends Weapon {
 	
 	ShortSword(){
 		
-		super(3,6,"Short Sword",200,150);
+		super(3,6,"Short Sword");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

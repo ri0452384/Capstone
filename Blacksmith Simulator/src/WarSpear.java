@@ -10,7 +10,7 @@ public class WarSpear extends Weapon {
 
 	WarSpear(){
 		
-		super(23,41,"War Spear",100,150);
+		super(23,41,"War Spear");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

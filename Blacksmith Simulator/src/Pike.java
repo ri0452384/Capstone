@@ -10,7 +10,7 @@ public class Pike extends Weapon {
 
 Pike(){
 		
-		super(15,24,"Pike",100,150);
+		super(15,24,"Pike");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",

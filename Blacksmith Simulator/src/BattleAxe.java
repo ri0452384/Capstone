@@ -9,7 +9,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class BattleAxe extends Weapon {
 
 	BattleAxe(){
-		super(19,34,"Battle Axe",100,150);
+		super(19,34,"Battle Axe");
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Beak","Bite","Butcher","Edge","Etcher","Gnash",
 			"Hunger","Mangler","Rend","Roar","Sever","Slayer","Song","Spawn","Splitter","Sunder",
@@ -31,7 +31,7 @@ public class BattleAxe extends Weapon {
 		super.render(container,maingame,g);
 		try {
 			
-			g.drawImage(new Image("battleaxe.png"), x+150, y-150);
+			g.drawImage(new Image("battleaxe.png"), x, y);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
