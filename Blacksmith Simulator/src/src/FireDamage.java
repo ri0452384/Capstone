@@ -25,38 +25,47 @@ public class FireDamage extends Prefix {
 			case 0:{
 				minAdd = 3;
 				maxAdd = 6;
+				super.setMultiplier(0.05);
 				break;
 			}case 1:{
 				minAdd = 12;
 				maxAdd = 27;
+				super.setMultiplier(0.07);
 				break;
 			}case 2:{
 				minAdd = 18;
 				maxAdd = 42;
+				super.setMultiplier(0.09);
 				break;
 			}case 3:{
 				minAdd = 25;
 				maxAdd = 59;
+				super.setMultiplier(0.12);
 				break;
 			}case 4:{
 				minAdd = 32;
 				maxAdd = 74;
+				super.setMultiplier(0.16);
 				break;
 			}case 5:{
 				minAdd = 40;
 				maxAdd = 92;
+				super.setMultiplier(0.18);
 				break;
 			}case 6:{
 				minAdd = 48;
 				maxAdd = 111;
+				super.setMultiplier(0.20);
 				break;
 			}case 7:{
 				minAdd = 58;
 				maxAdd = 134;
+				super.setMultiplier(0.22);
 				break;
 			}case 8:{
 				minAdd = 68;
 				maxAdd = 160;
+				super.setMultiplier(0.25);
 				break;
 			}
 			default:{

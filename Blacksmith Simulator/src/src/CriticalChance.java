@@ -26,26 +26,32 @@ public class CriticalChance extends Suffix {
 			case 0:{
 				minAdd = 10;
 				maxAdd = 14;
+				super.setMultiplier(0.10);
 				break;
 			}case 1:{
 				minAdd = 15;
 				maxAdd = 19;
+				super.setMultiplier(0.14);
 				break;
 			}case 2:{
 				minAdd = 20;
 				maxAdd = 24;
+				super.setMultiplier(0.17);
 				break;
 			}case 3:{
 				minAdd = 25;
 				maxAdd = 29;
+				super.setMultiplier(0.20);
 				break;
 			}case 4:{
 				minAdd = 30;
 				maxAdd = 34;
+				super.setMultiplier(0.25);
 				break;
 			}case 5:{
 				minAdd = 35;
 				maxAdd = 38;
+				super.setMultiplier(0.30);
 				break;
 			}default:{
 				minAdd = 0;

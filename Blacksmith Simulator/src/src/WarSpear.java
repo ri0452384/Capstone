@@ -10,14 +10,15 @@ public class WarSpear extends Weapon {
 
 	WarSpear(){
 		
-		super(23,41,"War Spear");
+		super(23,41,"War Spear",1745);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
 				"Song","Spike","Spiker","Stinger","Thirst"};
 		logCost = 5;
 		ironCost = 3;
-		
+		flavorText = "The war spear is a legendary weapon use by the most agile of combatants."
+				+ "\n It is able to deal massive damage to enemies in close combat";
 	}
 	
 	@Override
@@ -27,11 +28,7 @@ public class WarSpear extends Weapon {
 		
 	}
 	
-	@Override
-	public void update(GameContainer container, StateBasedGame maingame, int delta)
-			throws SlickException {
-		this.toString();
-	}
+	
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame,Graphics g) {

@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -10,6 +11,7 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -96,8 +98,8 @@ public class Workshop extends BasicGameState implements GameState {
 			throws SlickException {
 		
 		//unlimited resources cheat. remove comments to enable, recommended in developer mode/testing
-		//((MainGame)maingame).menu.ironCount +=5;
-		//((MainGame)maingame).menu.logCount +=5;
+		((MainGame)maingame).menu.ironCount +=5;
+		((MainGame)maingame).menu.logCount +=5;
 		craftChoices = ((MainGame)maingame).notice.requests;
 		//get the coordinates of the mouse cursor every update
 		int mouseX = container.getInput().getMouseX();
@@ -126,10 +128,8 @@ public class Workshop extends BasicGameState implements GameState {
 					}
 					if(imbueContainer.contains(mouseX, mouseY)){
 						
-						if(wep != null){
+						if(wep != null)
 							imbue();
-							wep.update(container,maingame,delta);
-						}
 					}
 					if(imbueContainer1.contains(mouseX, mouseY)){
 						
@@ -182,13 +182,12 @@ public class Workshop extends BasicGameState implements GameState {
 	}
 	
 	private void sell(StateBasedGame maingame) {
-		if(renderWeapon){
-		//wep.computeSellPrice();
-		((MainGame)maingame).menu.coins += wep.totalPrice;
-		craftChoices.remove(choice);
-		craftRectangles.remove(choice);
-		renderWeapon = false;
-		wep = null;
+		if(renderWeapon && choice != -1){
+			((MainGame)maingame).menu.coins += wep.sellPrice;
+			craftChoices.remove(choice);
+			craftRectangles.remove(choice);
+			renderWeapon = false;
+			wep = null;
 		}
 	}
 
@@ -204,7 +203,6 @@ public class Workshop extends BasicGameState implements GameState {
 	//this helper method will add random affixes to an item which is on display
 	private void imbue(){
 		wep.addAffix();
-		wep.computeSellPrice();
 				
 	}
 	
@@ -212,7 +210,7 @@ public class Workshop extends BasicGameState implements GameState {
 	//TODO implement resource cost checking before crafting, show an error message or a warning if cost is not met
 	private void craft(MainGame maingame) {
 		
-		if(choice == -1){
+		if(wep==null || choice == -1){
 			return;
 		}else{
 			wep=craftChoices.get(choice);
@@ -221,7 +219,6 @@ public class Workshop extends BasicGameState implements GameState {
 				renderWeapon = true;
 				maingame.menu.ironCount -= wep.ironCost;
 				maingame.menu.logCount -=wep.logCost;
-				wep.computeSellPrice();
 			}
 		}
 		
@@ -256,7 +253,7 @@ public class Workshop extends BasicGameState implements GameState {
 		}
 		//draw all the buttons to the screen
 		//craftButton.draw(craftContainer.getX(),craftContainer.getY());
-		//drawDebugLines(g,50);
+		drawDebugLines(g,50);
 		imbueButton2.draw(imbueContainer.getX(),imbueContainer.getY());
 		imbueButton1.draw(imbueContainer1.getX(),imbueContainer1.getY());
 		imbueButton2.draw(imbueContainer2.getX(),imbueContainer2.getY());
@@ -270,8 +267,6 @@ public class Workshop extends BasicGameState implements GameState {
 			g.draw(shape);
 			wep.render(container, maingame, g);
 		}
-		g.drawString("exit",wsDoor.getCenterX(),wsDoor.getCenterY());
-		g.drawString("Tip: Click the weapon name then the ANVIL to craft a weapon.", 75, 580);
 	}
 
 	

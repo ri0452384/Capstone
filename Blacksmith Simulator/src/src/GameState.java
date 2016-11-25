@@ -78,6 +78,7 @@ public class GameState extends BasicGameState {
 		g.setColor(Color.blue);
 		//g.drawString("To the Mines", 100,50);
 		smith.render(container,maingame,g);
+		g.drawString("Tip: Don't forget to visit the notice board near the middle of the room.", 75, 580);
 		
 	}
 	

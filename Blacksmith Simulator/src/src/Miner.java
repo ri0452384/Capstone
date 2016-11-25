@@ -34,7 +34,7 @@ public class Miner {
 	protected Vector2f vector;
 
 	public Miner() throws SlickException {
-		downSprite = new SpriteSheet("downSprite.png", 32, 32);
+		downSprite = new SpriteSheet("downMineSprite.png", 32, 32);
 		upSprite = new SpriteSheet("upSprite.png", 32, 32);
 		leftSprite = new SpriteSheet("leftSprite.png", 32, 32);
 		rightSprite = new SpriteSheet("rightSprite.png", 32, 32);
@@ -68,7 +68,7 @@ public class Miner {
 		g.setColor(Color.green);
 		//currentAnimation.draw(playerBox.getX(), playerBox.getY());
 		g.draw(playerBox);
-		g.drawImage(new Image("miner.png"), vector.x, vector.y);
+		g.drawAnimation(downAnimation, vector.x, vector.y);//(new Image("miner.png"), vector.x, vector.y);
 	}
 
 	private void mineCollisionTest(GameContainer container, int delta) {

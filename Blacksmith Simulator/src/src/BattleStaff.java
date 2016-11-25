@@ -1,4 +1,3 @@
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -10,14 +9,16 @@ public class BattleStaff extends Weapon {
 
 	BattleStaff(){
 		
-		super(6,37,"Battle Staff");
+		super(6,37,"Battle Staff",570);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Beam","Branch","Call","Chant","Cry",
 				"Gnarl","Goad","Mast","Pile","Pillar","Pole","Post","Roar","Song","Spell","Spire",
 				"Weaver"};
 		logCost = 5;
 		ironCost = 1;
-		
+		flavorText = "The battle staff is the ideal weapon to use by healers.\n"
+				+ " It is able to heal entire troops from their injuries"
+				+ "\n while casting a shield that protects them, too.";
 	}
 	
 	@Override
@@ -27,11 +28,7 @@ public class BattleStaff extends Weapon {
 		
 	}
 	
-	@Override
-	public void update(GameContainer container, StateBasedGame maingame, int delta)
-			throws SlickException {
-		this.toString();
-	}
+	
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame,Graphics g) {

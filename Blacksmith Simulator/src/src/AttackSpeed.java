@@ -25,34 +25,42 @@ public class AttackSpeed extends Suffix {
 			case 0:{
 				minAdd = 5;
 				maxAdd = 7;
+				super.setMultiplier(0.07);
 				break;
 			}case 1:{
 				minAdd = 8;
 				maxAdd = 10;
+				super.setMultiplier(0.07);
 				break;
 			}case 2:{
 				minAdd = 11;
 				maxAdd = 13;
+				super.setMultiplier(0.09);
 				break;
 			}case 3:{
 				minAdd = 14;
 				maxAdd = 16;
+				super.setMultiplier(0.10);
 				break;
 			}case 4:{
 				minAdd = 17;
 				maxAdd = 19;
+				super.setMultiplier(0.10);
 				break;
 			}case 5:{
 				minAdd = 20;
 				maxAdd = 22;
+				super.setMultiplier(0.10);
 				break;
 			}case 6:{
 				minAdd = 23;
 				maxAdd = 25;
+				super.setMultiplier(0.15);
 				break;
 			}case 7:{
 				minAdd = 26;
 				maxAdd = 29;
+				super.setMultiplier(0.19);
 				break;
 			}
 			default:{

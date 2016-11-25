@@ -37,7 +37,7 @@ public class NoticeBoard extends BasicGameState {
 		possibleWeapons = new ArrayList<Weapon>();
 		loadWeapons();
 		//generates random weapon requests
-		populateList(maingame);
+		//populateList(maingame);
 		background = new Image("noticeboard.png");
 		scroll = new Image("scroll.png");
 		

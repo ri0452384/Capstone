@@ -35,34 +35,42 @@ void imbue(Weapon wep) {
 		case 0:{
 			minAdd = 40;
 			maxAdd = 49;
+			super.setMultiplier(0.10);
 			break;
 		}case 1:{
 			minAdd = 50;
 			maxAdd = 64;
+			super.setMultiplier(0.15);
 			break;
 		}case 2:{
 			minAdd = 65;
 			maxAdd = 84;
+			super.setMultiplier(0.17);
 			break;
 		}case 3:{
 			minAdd = 85;
 			maxAdd = 109;
+			super.setMultiplier(0.20);
 			break;
 		}case 4:{
 			minAdd = 110;
 			maxAdd = 134;
+			super.setMultiplier(0.22);
 			break;
 		}case 5:{
 			minAdd = 135;
 			maxAdd = 154;
+			super.setMultiplier(0.24);
 			break;
 		}case 6:{
 			minAdd = 155;
 			maxAdd = 169;
+			super.setMultiplier(0.25);
 			break;
 		}case 7:{
 			minAdd = 170;
 			maxAdd = 179;
+			super.setMultiplier(0.30);
 			break;
 		}default:{
 			minAdd = 0;

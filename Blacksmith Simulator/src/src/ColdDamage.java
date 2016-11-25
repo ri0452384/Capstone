@@ -25,38 +25,47 @@ public class ColdDamage extends Prefix {
 			case 0:{
 				minAdd = 1;
 				maxAdd = 3;
+				super.setMultiplier(0.05);
 				break;
 			}case 1:{
 				minAdd = 6;
 				maxAdd = 15;
+				super.setMultiplier(0.07);
 				break;
 			}case 2:{
 				minAdd = 10;
 				maxAdd = 23;
+				super.setMultiplier(0.08);
 				break;
 			}case 3:{
 				minAdd = 14;
 				maxAdd = 32;
+				super.setMultiplier(0.09);
 				break;
 			}case 4:{
 				minAdd = 17;
 				maxAdd = 40;
+				super.setMultiplier(0.12);
 				break;
 			}case 5:{
 				minAdd = 22;
 				maxAdd = 50;
+				super.setMultiplier(0.15);
 				break;
 			}case 6:{
 				minAdd = 26;
 				maxAdd = 60;
+				super.setMultiplier(0.18);
 				break;
 			}case 7:{
 				minAdd = 31;
 				maxAdd = 73;
+				super.setMultiplier(0.22);
 				break;
 			}case 8:{
 				minAdd = 37;
 				maxAdd = 87;
+				super.setMultiplier(0.25);
 				break;
 			}
 			default:{

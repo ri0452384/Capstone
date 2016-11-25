@@ -42,7 +42,7 @@ public abstract class Weapon {
 		ReduceArmor redarm;
 		
 		Random rand;
-	
+	protected String flavorText;
 	protected Color textColor;
 	//base values of a weapon, useful for scouring and percent based damage
 	//only set once, as soon as the concrete weapon type is instantiated
@@ -70,16 +70,22 @@ public abstract class Weapon {
 	protected String damageText;
 	//base name of a weapon
 	private String name;
+	// weapon base price
+	private int basePrice;
+	// weapon final price
+	int totalPrice;
+	// total multiplier
+	private double totalMultiplier;
+	
 	
 	//crafting cost of the weapon will be in terms of metal ores
 	int logCost;
 	int ironCost;
 	
-	//selling price of the weapon must be dependent on damage, and other magical properties
-	double sellPrice;
+
 	
 	//constructor requires minimum dmg, max dmg, weapon name, and x, y coordinates where they can be displayed once crafted
-	Weapon(int minimum, int maximum,String name){
+	Weapon(int minimum, int maximum,String name,int baseprice){
 		BASE_NAME = name;
 		BASE_MIN = minimum;
 		BASE_MAX = maximum;
@@ -90,8 +96,7 @@ public abstract class Weapon {
 		this.name = name;
 		this.weaponText = "\n-------------";
 		this.damageText = "";
-		x = 125;
-		y = 150;
+		this.basePrice = baseprice;
 		prefixes = new Prefix[3];
 		suffixes = new Suffix[3];
 		isRare = false;
@@ -99,7 +104,8 @@ public abstract class Weapon {
 		textColor = Color.white;
 		prefixCount = 0;
 		suffixCount = 0;
-		
+		x = 150;
+		y = 150;
 		pre = new ArrayList<Prefix>();
 		suf = new ArrayList<Suffix>();
 		resetPossibleAffixes();
@@ -154,7 +160,11 @@ public abstract class Weapon {
 		g.drawString(this.toString(), 425, 202);
 	}
 	
-	public abstract void update(GameContainer container, StateBasedGame maingame, int delta)throws SlickException;
+	public void update(GameContainer container, StateBasedGame maingame, int delta)throws SlickException{
+		
+		this.toString();
+		
+	}
 	
 	public String getName(){
 		return name;
@@ -200,7 +210,7 @@ public abstract class Weapon {
 	}
 	
 	public String toString(){
-		return this.damageText +  this.weaponText;
+		return this.damageText +  this.weaponText + "\n sells for "+this.totalPrice+" gold coins";
 	}
 
 	public String name(){
@@ -243,6 +253,7 @@ public abstract class Weapon {
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		renamed = false;
 		isRare = false;
+		totalPrice = basePrice;
 		textColor = Color.white;
 		prefixCount = 0;
 		suffixCount = 0;
@@ -319,4 +330,35 @@ public abstract class Weapon {
 	{
 		return isRare;
 	}
+
+
+	void computeSellPrice(){
+
+		for(Affix af: prefixes){
+			
+			if(af == null){
+				
+				//do nothing
+			}
+			else
+			{
+				totalMultiplier += af.getMultiplier();
+			}
+
+		}
+		for(Affix af: suffixes){
+			
+			if(af == null){
+				
+				//do nothing
+			}
+			else
+			{
+				totalMultiplier += af.getMultiplier();
+			}
+			
+		}
+		totalPrice = (int) ((1+totalMultiplier) * basePrice );
+		
+}
 }
