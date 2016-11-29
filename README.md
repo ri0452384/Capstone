@@ -7,4 +7,4 @@
 
 ###NEW! BETA testing is now available!!!
 ####to test the game, get the .zip file from this link:
-https://drive.google.com/open?id=0BzW_l1b2Wb1VdHJWcGJxZHJHeFk
+https://drive.google.com/open?id=0BzW_l1b2Wb1VOFY3TGFsczdubG8
