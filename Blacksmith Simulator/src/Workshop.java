@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -7,11 +6,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -19,8 +16,9 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /*
- * 	
- * 
+ * 	The Workshop is where all the magic happens, literally. The Blacksmith has kept three runes from the great war that was passed 
+ *  on from generations and	that is the secret of how he can make weapons 
+ * of exceptionally high quality and enabling him great efficiency.
  * 
  * class created by Rayven Ingles
  */
@@ -30,7 +28,6 @@ public class Workshop extends BasicGameState implements GameState {
 	private Player smith;
 	//private Image craftButton;
 	private Rectangle craftContainer;
-	TrueTypeFont ttf;
 	private Image imbueButton;
 	private Rectangle imbueContainer;
 	
@@ -64,17 +61,17 @@ public class Workshop extends BasicGameState implements GameState {
 		//now is located in the anvil object inside the workshop
 		craftContainer = new Rectangle(665, 433, 170, 80);
 		//rune for the imbue method, which adds a random prefix/suffix to the weapon
-		imbueButton = new Image("imbueButton.png");
-		imbueContainer = new Rectangle(50, 50, imbueButton.getWidth(), imbueButton.getHeight());
+		imbueButton = new Image("Images/imbueButton.png");
+		imbueContainer = new Rectangle(150, 400, imbueButton.getWidth(), imbueButton.getHeight());
 		//rune for removing all magical properties from the weapon
-		imbueButton1 = new Image("imbueButton1.png");
-		imbueContainer1 = new Rectangle(50, 150, imbueButton1.getWidth(), imbueButton1.getHeight());
+		imbueButton1 = new Image("Images/imbueButton1.png");
+		imbueContainer1 = new Rectangle(250, 400, imbueButton1.getWidth(), imbueButton1.getHeight());
 		//TODO implement a use for this button/rune
-		imbueButton2 = new Image("imbueButton2.png");
-		imbueContainer2 = new Rectangle(50, 250, imbueButton2.getWidth(), imbueButton2.getHeight());
+		imbueButton2 = new Image("Images/imbueButton2.png");
+		imbueContainer2 = new Rectangle(350, 400, imbueButton2.getWidth(), imbueButton2.getHeight());
 		wsDoor = new Polygon(new float[]{571,338,	624,338,	624,476,	575,470});
 		craftChoices = new ArrayList<Weapon>();
-		background = new Image("workshop.jpg");
+		background = new Image("Images/workshop.png");
 		choice=-1;
 		craftRectangles = new ArrayList<Rectangle>();
 		//do not display the weapon at start
@@ -114,8 +111,6 @@ public class Workshop extends BasicGameState implements GameState {
 			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
 		}
 		
-		
-	
 				if(container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 					//fixed: multiple clicking by changing the input from isMouseButtonDown to isMousePressed event handling
 					
@@ -128,8 +123,10 @@ public class Workshop extends BasicGameState implements GameState {
 					}
 					if(imbueContainer.contains(mouseX, mouseY)){
 						
-						if(wep != null)
+						if(wep != null){
 							imbue();
+							wep.update(container,maingame,delta);
+						}
 					}
 					if(imbueContainer1.contains(mouseX, mouseY)){
 						
@@ -149,22 +146,16 @@ public class Workshop extends BasicGameState implements GameState {
 					if(wsDoor.contains(mouseX, mouseY)){
 						maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
 					}
-					int i=0;
+					
 					for(Rectangle rec:craftRectangles)
 					{	
 						if(rec ==null){
 							
 						}else if(rec.contains(mouseX, mouseY) ){
 							
-							//if(((MainGame)maingame).menu.logCount >= craftChoices.get(i).logCost 
-									//&& ((MainGame)maingame).menu.ironCount >= craftChoices.get(i).ironCost){
-								//renderWeapon = true;
-								choice = i;
-								wep = craftChoices.get(i);
-								//craftChoices.remove(i);
-							//}
+								choice = craftRectangles.indexOf(rec);
+								wep = craftChoices.get(craftRectangles.indexOf(rec));
 						}
-						i++;
 					}
 				}
 				
@@ -182,11 +173,17 @@ public class Workshop extends BasicGameState implements GameState {
 	}
 	
 	private void sell(StateBasedGame maingame) {
-		((MainGame)maingame).menu.coins += wep.sellPrice;
+		if(renderWeapon){
+		//wep.computeSellPrice();
+		((MainGame)maingame).menu.coins += wep.totalPrice;
+		
 		craftChoices.remove(choice);
 		craftRectangles.remove(choice);
 		renderWeapon = false;
+		((MainGame)maingame).menu.weaponSold++;
 		wep = null;
+		choice = -1;
+		}
 	}
 
 	//helper method called to remove properties from the weapon, only limited to 5 charges per weapon crafted
@@ -200,15 +197,20 @@ public class Workshop extends BasicGameState implements GameState {
 	
 	//this helper method will add random affixes to an item which is on display
 	private void imbue(){
-		wep.addAffix();
+		if(wep.prefixes[2] != null && wep.suffixes[2] != null){
+			return;
+		}else{
+			wep.addAffix();
+			return;
+		}
+		
 				
 	}
 	
-	//helper method that will create a new weapon
-	//TODO implement resource cost checking before crafting, show an error message or a warning if cost is not met
+	
 	private void craft(MainGame maingame) {
 		
-		if(wep==null || choice == -1){
+		if(choice == -1 || choice >= craftChoices.size()){
 			return;
 		}else{
 			wep=craftChoices.get(choice);
@@ -229,45 +231,89 @@ public class Workshop extends BasicGameState implements GameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
+		String tip="Welcome to the Workshop!";
 		background.draw();
-		
+		//drawDebugLines(g,50);
 		//invokes drawing of debug lines for better button and image placement, to remove once program is live
-		g.setColor(Color.cyan);
-		
-		//int row=65;
-		
+		g.setColor(Color.white);
+		if(craftChoices.isEmpty()){
+			tip= "To get weapon crafting options,\n exit the workshop and visit the notice board.";
+		}else{
+			tip="Tip: Click the weapon name then the ANVIL to craft a weapon.";
+		}
 		int i=0;
 		for(Weapon w: craftChoices){
 			
 			if(w!=null){
 				if(!renderWeapon && craftRectangles.get(i) != null){
+					int mouseX = container.getInput().getMouseX();
+					int mouseY = container.getInput().getMouseY();
 					g.drawString(w.BASE_NAME, craftRectangles.get(i).getMinX() + 10, 550);
-					// g.draw(craftRectangles[i]);
+					if(craftRectangles.get(i).contains(mouseX, mouseY)){
+						g.draw(craftRectangles.get(i));
+						if(((MainGame)maingame).menu.ironCount < w.ironCost || ((MainGame)maingame).menu.logCount < w.logCost){
+							tip="Not enough resources. Please visit the Mine.";
+						}
+					}
 					 i++;
 				}
 				
 			}
-			//row += 150;
 		}
 		//draw all the buttons to the screen
-		//craftButton.draw(craftContainer.getX(),craftContainer.getY());
-		drawDebugLines(g,50);
-		imbueButton2.draw(imbueContainer.getX(),imbueContainer.getY());
+		int mouseX = container.getInput().getMouseX();
+		int mouseY = container.getInput().getMouseY();
+		
+		if(imbueContainer.contains(mouseX,mouseY)){
+			imbueButton = new Image("Images/imbueButton_hover.png");
+			g.setColor(Color.white);
+			tip = "The Ignis rune\n This will imbue your weapon with a random magical property";
+		}else{
+
+			imbueButton = new Image("Images/imbueButton.png"); 
+		}
+		
+		if(imbueContainer1.contains(mouseX,mouseY)){
+			imbueButton1 = new Image("Images/imbueButton1_hover.png");
+			tip = "The rune of Tir\n This will scour your weapon, removing all magical properties";
+		}else{
+			imbueButton1 = new Image("Images/imbueButton1.png"); 
+		}
+		if(imbueContainer2.contains(mouseX,mouseY)){
+			imbueButton2 = new Image("Images/imbueButton2_hover.png");
+			tip = "The rune of Plutus\n This will magically transport your weapon\n into the hands of the citizen who requested it,"
+					+ "\nand grants you the reward for crafting the weapon";
+		}else{
+
+			imbueButton2 = new Image("Images/imbueButton2.png"); 
+		}
+		
+		imbueButton.draw(imbueContainer.getX(),imbueContainer.getY());
 		imbueButton1.draw(imbueContainer1.getX(),imbueContainer1.getY());
 		imbueButton2.draw(imbueContainer2.getX(),imbueContainer2.getY());
 		
 		
 		//draws depending if the renderWeapon variable is true, throws NullPointerException if not checked properly
 		if(renderWeapon){
-			Rectangle shape = new Rectangle(425, 175, 325, 225);
-			g.setColor(Color.decode("#141326"));
-			g.fillRect(400, 175, 375, 225);
-			g.draw(shape);
 			wep.render(container, maingame, g);
 		}
+		g.drawString(tip,50,470);
+		if(wsDoor.contains(mouseX, mouseY)){
+			Image workDoor = new Image("Images/exit_glow.png");
+			g.drawImage(workDoor, 535, 317);
+			g.drawString("exit",wsDoor.getCenterX(),wsDoor.getCenterY());
+		}
+		if(craftContainer.contains(mouseX,mouseY)){
+			Image anvil = new Image("Images/anvil_active.png");
+			g.drawImage(anvil, 669, 315);
+			g.drawString("Craft",craftContainer.getCenterX(),craftContainer.getCenterY());
+		}
+		
+		
 	}
 
 	
+	@SuppressWarnings("unused")
 	private void drawDebugLines(Graphics g, int size){
 	int resolution = 800;
 		g.setColor(Color.darkGray);

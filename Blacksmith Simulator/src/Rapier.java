@@ -1,4 +1,3 @@
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,13 +8,18 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Rapier extends Weapon {
 	Rapier(){
 		
-		super(7,16,"Rapier");
+		super(25,29,"Rapier",1480);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
 				"Song","Spike","Spiker","Stinger","Thirst"};
 		logCost = 0;
 		ironCost = 2;
+		flavorText = "The rapier is meant only for the hands"
+				+ "\n of the highly trained royal elites"
+				+ "\n and skilled assassins. Its high-end design"
+				+ "\n  allows its wielder to execute fatal damage"
+				+ "\n and deliver his/her enemy a quick death.";
 	}
 	
 	@Override
@@ -31,7 +35,7 @@ public class Rapier extends Weapon {
 		super.render(container,maingame,g);
 		try {
 			
-			g.drawImage(new Image("rapier.png"), x, y);
+			g.drawImage(new Image("Images/rapier.png"), x, y);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,11 +43,6 @@ public class Rapier extends Weapon {
 
 	}
 
-	@Override
-	public void update(GameContainer container, StateBasedGame maingame,
-			int delta) throws SlickException {
-		this.toString();
-
-	}
+	
 
 }

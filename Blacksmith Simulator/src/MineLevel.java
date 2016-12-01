@@ -98,7 +98,7 @@ public class MineLevel extends StaticLevel {
 		pool = new Polygon(polygonPoints);
 		rock = new Polygon(new float[]{291,110,	289,148,	315,148,	314,104});
 		pillar = new Polygon(new float[]{499,489,	554,489,	550,374,	503,376});
-		background = new Image("mines.png");
+		background = new Image("Images/mines.png");
 		mineExit = new Rectangle(670, 520, 32, 64);
 		lowerTunnel = new Rectangle(710,0,32,16);
 		upperTunnel = new Rectangle(165,0,32,16);
@@ -162,15 +162,18 @@ public class MineLevel extends StaticLevel {
 	public boolean metalCollisionTest(Shape player,MainGame main){
 		for(Resource met: metals){
 			if(met.rect.intersects(player)){
-				if(met instanceof Iron)
-				((MainGame)main).menu.ironCount ++;
-				if(met instanceof Log)
-				((MainGame)main).menu.logCount ++;
+				if(met instanceof Iron){
+					((MainGame)main).menu.ironCount ++;
+					((MainGame)main).menu.resources++;
+					}
+				if(met instanceof Log){
+					((MainGame)main).menu.logCount ++;
+					((MainGame)main).menu.resources++;
+				}
 				metals.remove(met);
 				return true;
 			}
 		}
-		System.out.println(0);
 		return false;
 	}
 	

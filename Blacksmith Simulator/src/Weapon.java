@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 //TODO need to restrict Affixes to only one type of affix per weapon.
@@ -42,7 +43,7 @@ public abstract class Weapon {
 		ReduceArmor redarm;
 		
 		Random rand;
-	
+	protected String flavorText;
 	protected Color textColor;
 	//base values of a weapon, useful for scouring and percent based damage
 	//only set once, as soon as the concrete weapon type is instantiated
@@ -70,16 +71,22 @@ public abstract class Weapon {
 	protected String damageText;
 	//base name of a weapon
 	private String name;
+	// weapon base price
+	private int basePrice;
+	// weapon final price
+	int totalPrice;
+	// total multiplier
+	private double totalMultiplier;
+	
 	
 	//crafting cost of the weapon will be in terms of metal ores
 	int logCost;
 	int ironCost;
 	
-	//selling price of the weapon must be dependent on damage, and other magical properties
-	double sellPrice;
+
 	
 	//constructor requires minimum dmg, max dmg, weapon name, and x, y coordinates where they can be displayed once crafted
-	Weapon(int minimum, int maximum,String name){
+	Weapon(int minimum, int maximum,String name,int baseprice){
 		BASE_NAME = name;
 		BASE_MIN = minimum;
 		BASE_MAX = maximum;
@@ -90,8 +97,7 @@ public abstract class Weapon {
 		this.name = name;
 		this.weaponText = "\n-------------";
 		this.damageText = "";
-		x = 125;
-		y = 150;
+		this.basePrice = baseprice;
 		prefixes = new Prefix[3];
 		suffixes = new Suffix[3];
 		isRare = false;
@@ -99,10 +105,12 @@ public abstract class Weapon {
 		textColor = Color.white;
 		prefixCount = 0;
 		suffixCount = 0;
-		
+		x = 75;
+		y = 75;
 		pre = new ArrayList<Prefix>();
 		suf = new ArrayList<Suffix>();
 		resetPossibleAffixes();
+		this.computeSellPrice();
 	}
 	
 	void resetPossibleAffixes(){
@@ -148,13 +156,22 @@ public abstract class Weapon {
 	public abstract void init(GameContainer arg0, StateBasedGame arg1)	throws SlickException;
 	
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g){
+		Rectangle shape = new Rectangle(375, 75, 325, 225);
+		g.setColor(Color.decode("#141326"));
+		g.fillRect(375, 75, 375, 225);
+		g.draw(shape);
 		g.setColor(textColor);
-		g.drawString(this.name(),425,200);
+		g.drawString(this.name(),385,75);
 		g.setColor(Color.white);
-		g.drawString(this.toString(), 425, 202);
+		g.drawString(this.toString(), 385, 77);
+		
 	}
 	
-	public abstract void update(GameContainer container, StateBasedGame maingame, int delta)throws SlickException;
+	public void update(GameContainer container, StateBasedGame maingame, int delta)throws SlickException{
+		
+		this.toString();
+		
+	}
 	
 	public String getName(){
 		return name;
@@ -200,7 +217,7 @@ public abstract class Weapon {
 	}
 	
 	public String toString(){
-		return this.damageText +  this.weaponText;
+		return this.damageText +  this.weaponText + "\n sells for "+this.totalPrice+" gold coins";
 	}
 
 	public String name(){
@@ -209,7 +226,6 @@ public abstract class Weapon {
 	
 	boolean alreadyHas(String affixName) {
 		//checks whether the item has an existing prefix
-		boolean ans = false;
 		for(Affix af: prefixes){
 			
 			if(af == null){
@@ -233,7 +249,7 @@ public abstract class Weapon {
 			}
 			
 		}
-		return ans;
+		return false;
 	}
 	
 	void removeAffixes(){
@@ -243,14 +259,18 @@ public abstract class Weapon {
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		renamed = false;
 		isRare = false;
+		
 		textColor = Color.white;
 		prefixCount = 0;
 		suffixCount = 0;
 		prefixes = new Prefix[3];
 		suffixes = new Suffix[3];
+		totalPrice = basePrice;
+		totalMultiplier = 1;
 		this.setMinPhysDamage(BASE_MIN);
 		this.setMaxPhysDamage(BASE_MAX);
 		resetPossibleAffixes();
+		
 	
 	}
 
@@ -274,7 +294,7 @@ public abstract class Weapon {
 			choice = 1;
 		}
 		
-		
+		//prefix
 		if(choice == 1){
 			if(prefixCount > 0){
 				isRare = true;
@@ -283,11 +303,16 @@ public abstract class Weapon {
 			if(prefixCount < 3){
 				int i = rand.nextInt(pre.size());
 				p = pre.get(i);
-				prefixes[prefixCount] = p;
-				prefixes[prefixCount++].imbue(this);
 				pre.remove(i);
+				if(! this.alreadyHas(p.getAffixName())){
+					prefixes[prefixCount] = p;
+					prefixes[prefixCount++].imbue(this);
+					this.computeSellPrice();
+				}
 			}
-		}else{
+		}
+		//suffix
+		else{
 			if(suffixCount > 0){
 				isRare = true;
 				makeRare();
@@ -295,9 +320,12 @@ public abstract class Weapon {
 			if(suffixCount <3){
 				int i = rand.nextInt(suf.size());
 				s = suf.get(i);
+				suf.remove(i);
+				if(! this.alreadyHas(s.getAffixName())){
 				suffixes[suffixCount] = s;
 				suffixes[suffixCount++].imbue(this);
-				suf.remove(i);
+				this.computeSellPrice();
+				}
 			}
 			
 		}		
@@ -306,10 +334,10 @@ public abstract class Weapon {
 	private void makeRare() {
 		//guarantees that this is invoked only once
 		if(! this.renamed){
-			int pre = (int)(Math.random()*this.possibleRarePrefixes.length);
+			int pref = (int)(Math.random()*this.possibleRarePrefixes.length);
 			this.textColor = Color.orange;
-			int suf = (int)(Math.random()*this.possibleRareSuffixes.length);
-			this.setName(this.possibleRarePrefixes[pre] + " "+ this.possibleRareSuffixes[suf] );
+			int suff = (int)(Math.random()*this.possibleRareSuffixes.length);
+			this.setName(this.possibleRarePrefixes[pref] + " "+ this.possibleRareSuffixes[suff] );
 			this.renamed = true;
 		}
 		
@@ -319,4 +347,36 @@ public abstract class Weapon {
 	{
 		return isRare;
 	}
+
+
+	void computeSellPrice(){
+		
+
+		for(Affix af: prefixes){
+			
+			if(af == null){
+				
+				//do nothing
+			}
+			else
+			{
+				totalMultiplier += af.getMultiplier();
+			}
+
+		}
+		for(Affix af: suffixes){
+			
+			if(af == null){
+				
+				//do nothing
+			}
+			else
+			{
+				totalMultiplier += af.getMultiplier();
+			}
+			
+		}
+		totalPrice = (int) ((1+totalMultiplier) * basePrice );
+		
+}
 }

@@ -25,34 +25,42 @@ public class FireResist extends Suffix {
 			case 0:{
 				minAdd = 6;
 				maxAdd = 11;
+				super.setMultiplier(0.02);
 				break;
 			}case 1:{
 				minAdd = 12;
 				maxAdd = 17;
+				super.setMultiplier(0.05);
 				break;
 			}case 2:{
 				minAdd = 18;
 				maxAdd = 23;
+				super.setMultiplier(0.06);
 				break;
 			}case 3:{
 				minAdd = 24;
 				maxAdd = 29;
+				super.setMultiplier(0.07);
 				break;
 			}case 4:{
 				minAdd = 30;
 				maxAdd = 35;
+				super.setMultiplier(0.09);
 				break;
 			}case 5:{
 				minAdd = 36;
 				maxAdd = 41;
+				super.setMultiplier(0.11);
 				break;
 			}case 6:{
 				minAdd = 42;
 				maxAdd = 45;
+				super.setMultiplier(0.13);
 				break;
 			}case 7:{
 				minAdd = 46;
 				maxAdd = 48;
+				super.setMultiplier(0.15);
 				break;
 			}
 			default:{
@@ -69,7 +77,7 @@ public class FireResist extends Suffix {
 			renameWeapon(wep,fin);
 		this.setTooltip("\n"+minAdd +"% to fire resistance");
 		wep.weaponText += this.getTooltip();
-		System.out.println(wep);
+		 
 		//wep.suffixCount++;
 	}
 

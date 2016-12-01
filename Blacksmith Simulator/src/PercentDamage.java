@@ -26,7 +26,7 @@ public class PercentDamage extends Prefix {
 	
 @Override
 void imbue(Weapon wep) {
-	
+	multiplier = 100;
 	Random selector = new Random();
 	
 	int fin = selector.nextInt(possiblePrefixes.length);
@@ -35,34 +35,42 @@ void imbue(Weapon wep) {
 		case 0:{
 			minAdd = 40;
 			maxAdd = 49;
+			super.setMultiplier(0.10);
 			break;
 		}case 1:{
 			minAdd = 50;
 			maxAdd = 64;
+			super.setMultiplier(0.15);
 			break;
 		}case 2:{
 			minAdd = 65;
 			maxAdd = 84;
+			super.setMultiplier(0.17);
 			break;
 		}case 3:{
 			minAdd = 85;
 			maxAdd = 109;
+			super.setMultiplier(0.20);
 			break;
 		}case 4:{
 			minAdd = 110;
 			maxAdd = 134;
+			super.setMultiplier(0.22);
 			break;
 		}case 5:{
 			minAdd = 135;
 			maxAdd = 154;
+			super.setMultiplier(0.24);
 			break;
 		}case 6:{
 			minAdd = 155;
 			maxAdd = 169;
+			super.setMultiplier(0.25);
 			break;
 		}case 7:{
 			minAdd = 170;
 			maxAdd = 179;
+			super.setMultiplier(0.30);
 			break;
 		}default:{
 			minAdd = 0;
@@ -73,19 +81,19 @@ void imbue(Weapon wep) {
 	}
 	
 	
-	multiplier = 100 + minAdd + selector.nextInt(maxAdd-minAdd);
+	multiplier += minAdd + selector.nextInt(maxAdd-minAdd);
 	
+	double tmp = multiplier / 100;
 	
+	wep.setMinPhysDamage((int) (wep.getMinPhysDamage()*tmp));
+	wep.setMaxPhysDamage((int) (wep.getMaxPhysDamage()*tmp));
 	
-	
-	wep.setMinPhysDamage((int)(wep.getMinPhysDamage() *(multiplier))/100);
-	wep.setMaxPhysDamage((int)(wep.getMaxPhysDamage() *(multiplier))/100);
 	wep.damageText = "\nDamage: " + wep.getMinPhysDamage() +" - " + wep.getMaxPhysDamage();
 	this.setTooltip("\n"+(multiplier - 100)+"% " + "increased physical damage");
 	wep.weaponText += this.getTooltip();
 	if(! wep.isRare())
 		renameWeapon(wep,fin);
-	System.out.println(wep);
+	
 	//wep.prefixCount++;
 }
 

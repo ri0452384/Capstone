@@ -1,4 +1,3 @@
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -10,13 +9,16 @@ public class LongSword extends Weapon {
 
 	LongSword(){
 		
-		super(9,21,"Long Sword");
+		super(9,21,"Long Sword",925);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
 				"Song","Spike","Spiker","Stinger","Thirst"};
 		logCost = 1;
 		ironCost = 3;
+		flavorText = "The longsword is the most traditionally used"
+				+ "\n weapon used by trained kingdom knights."
+				+ "\n It is able to deal adequate damage enemies. ";
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class LongSword extends Weapon {
 		super.render(container,maingame,g);
 		try {
 			
-			g.drawImage(new Image("longsword.png"), x, y);
+			g.drawImage(new Image("Images/longsword.png"), x, y);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,11 +42,6 @@ public class LongSword extends Weapon {
 
 	}
 
-	@Override
-	public void update(GameContainer container, StateBasedGame maingame,
-			int delta) throws SlickException {
-		this.toString();
-
-	}
+	
 
 }

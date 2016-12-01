@@ -46,7 +46,7 @@ public class Mines extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
 		smith.render(container, maingame, g);
-		g.setColor(Color.white);
+		g.setColor(Color.black);
 		g.drawString("Tip: Use arrow keys to move around and pick up the resources in the mine.", 75, 580);
 		
 	}

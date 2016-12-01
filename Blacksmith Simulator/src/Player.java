@@ -37,10 +37,10 @@ public class Player {
 
 	public Player() throws SlickException {
 
-		downSprite = new SpriteSheet("downSprite.png", 57, 59);
-		upSprite = new SpriteSheet("upSprite.png", 57, 59);
-		leftSprite = new SpriteSheet("leftSprite.png", 57, 56);
-		rightSprite = new SpriteSheet("rightSprite.png", 57, 59);
+		downSprite = new SpriteSheet("Images/downSprite.png", 57, 59);
+		upSprite = new SpriteSheet("Images/upSprite.png", 57, 59);
+		leftSprite = new SpriteSheet("Images/leftSprite.png", 57, 56);
+		rightSprite = new SpriteSheet("Images/rightSprite.png", 57, 59);
 		level = new HouseLevel();
 
 	}
@@ -139,10 +139,10 @@ public class Player {
 		
 		if(mineTimer >= 25000){
 			level.mineOpen = true;
-			level.mineDoor = new Polygon(new float[]{100,25,
-					100,100,
-					250,100,
-					250,25});
+			level.mineDoor = new Polygon(new float[]{160,70,
+					160,125,
+					195,125,
+					195,70});
 		}
 		
 		houseCollisionTest(container, delta);

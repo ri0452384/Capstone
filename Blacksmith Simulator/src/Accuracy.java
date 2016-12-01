@@ -27,34 +27,42 @@ public class Accuracy extends Suffix {
 			case 0:{
 				minAdd = 5;
 				maxAdd = 15;
+				super.setMultiplier(0.03);
 				break;
 			}case 1:{
 				minAdd = 16;
 				maxAdd = 60;
+				super.setMultiplier(0.06);
 				break;
 			}case 2:{
 				minAdd = 61;
 				maxAdd = 100;
+				super.setMultiplier(0.09);
 				break;
 			}case 3:{
 				minAdd = 101;
 				maxAdd = 130;
+				super.setMultiplier(0.12);
 				break;
 			}case 4:{
 				minAdd = 131;
 				maxAdd = 165;
+				super.setMultiplier(0.13);
 				break;
 			}case 5:{
 				minAdd = 166;
 				maxAdd = 200;
+				super.setMultiplier(0.13);
 				break;
 			}case 6:{
 				minAdd = 201;
 				maxAdd = 250;
+				super.setMultiplier(0.14);
 				break;
 			}case 7:{
 				minAdd = 251;
 				maxAdd = 320;
+				super.setMultiplier(0.17);
 				break;
 			}
 			default:{
@@ -72,8 +80,7 @@ public class Accuracy extends Suffix {
 		wep.weaponText += this.getTooltip();
 		if(! wep.isRare())
 			renameWeapon(wep,fin);
-		//wep.suffixCount++;
-		System.out.println(wep);
+		
 	}
 
 	void renameWeapon(Weapon wep,int fin){

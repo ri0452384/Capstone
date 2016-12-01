@@ -17,7 +17,7 @@ public class Iron extends Resource {
 		super.name = "iron";
 		visibility = true;
 		try {
-			resourceForm = new Image("iron.png");
+			resourceForm = new Image("Images/iron.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

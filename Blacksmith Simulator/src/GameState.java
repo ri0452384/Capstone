@@ -55,12 +55,10 @@ public class GameState extends BasicGameState {
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(4, new FadeOutTransition(), new FadeInTransition());
 			((MainGame)maingame).mine.smith.level.refillMetals();
-			smith.vector.x = 125;
-			smith.vector.y = 125;
+			smith.vector.x = 265;
+			smith.vector.y = 140;
 			smith.facedown();
 		}
-			
-		
 		smith.update(container, maingame, delta);
 		
 	}
@@ -69,19 +67,22 @@ public class GameState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
-		//container.sleep(100);
-		//g.drawString("Game State",50,100);
+		
+		String tip="Tip: Don't forget to visit the notice board!";
+		
+		if(smith.level.mineOpen){
+			tip = "The Mines are now open! Go up the ladder and into the tunnel at the top left";
+		}
 		smith.level.render(container,maingame,g);
-		drawDebugLines(g, 50);
-		g.setColor(Color.red);
-		//g.drawString("Workshop DOOR", 500, 150);
-		g.setColor(Color.blue);
-		//g.drawString("To the Mines", 100,50);
+		
 		smith.render(container,maingame,g);
+		g.setColor(Color.white);
+		g.drawString(tip, 75, 580);
 		
 	}
 	
 	//helper method that generates the grid lines
+	@SuppressWarnings("unused")
 	private void drawDebugLines(Graphics g, int size){
 		int resolution = 800;
 		g.setColor(Color.darkGray);

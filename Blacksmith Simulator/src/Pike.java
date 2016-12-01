@@ -1,4 +1,3 @@
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -10,14 +9,17 @@ public class Pike extends Weapon {
 
 Pike(){
 		
-		super(15,24,"Pike");
+		super(34,49,"Pike",1875);
 		damageText = "\nDamage: " + BASE_MIN +" - " + BASE_MAX;
 		possibleRareSuffixes  = new String[]{"Bane","Barb","Beak","Bite","Edge","Fang",
 				"Gutter","Hunger","Impaler","Needle","Razor","Saw","Scalpel","Scratch","Sever","Skewer","Slicer",
 				"Song","Spike","Spiker","Stinger","Thirst"};
 		logCost = 3;
 		ironCost = 1;
-		
+		flavorText = "The Pike is the weapon said to be used"
+				+ "\n by the unnamed general in the first great war."
+				+ "\n It was able to lash out lightning damage to"
+				+ "\n enemy lines, leaving the enemy lines devastated.";
 	}
 	
 	@Override
@@ -27,18 +29,14 @@ Pike(){
 		
 	}
 	
-	@Override
-	public void update(GameContainer container, StateBasedGame maingame, int delta)
-			throws SlickException {
-		this.toString();
-	}
+	
 	
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame,Graphics g) {
 		super.render(container,maingame,g);
 		try {
 			
-			g.drawImage(new Image("pike.png"), x, y);
+			g.drawImage(new Image("Images/pike.png"), x, y);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

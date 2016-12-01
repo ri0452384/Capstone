@@ -10,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -26,8 +25,9 @@ public class NoticeBoard extends BasicGameState {
 	protected ArrayList<Weapon> possibleWeapons;
 	private Image background;
 	private Image scroll;
+	ArrayList<Rectangle> noticeRectangles;
 	Shape exitDoor;
-	UnicodeFont uni;
+	Weapon wep;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
@@ -35,20 +35,29 @@ public class NoticeBoard extends BasicGameState {
 		exitDoor = new Rectangle(400,500,240,20);
 		requests = new ArrayList<Weapon>();
 		possibleWeapons = new ArrayList<Weapon>();
-		loadWeapons();
-		//generates random weapon requests
+		noticeRectangles = new ArrayList<Rectangle>();
+		
+		background = new Image("Images/noticeboard.png");
+		scroll = new Image("Images/scroll.png");
 		populateList(maingame);
-		background = new Image("noticeboard.png");
-		scroll = new Image("scroll.png");
 		
 		
 	}
 
-	private void populateList(StateBasedGame maingame) {
+
+	void populateList(StateBasedGame maingame) {
+		loadWeapons();
+		noticeRectangles.clear();
+		requests.clear();
 		for(int i = 0;i<5;i++){	
 			int choice = (int)(Math.random() * possibleWeapons.size());
 			requests.add(possibleWeapons.get(choice));
 			possibleWeapons.remove(choice);
+		}
+		int col = 325;
+		for(int i=0;i<5;i++){
+			noticeRectangles.add(new Rectangle(125,col,150, 22));
+			col +=30;
 		}
 		//generates the craft rectangles from workshop again
 		((MainGame)maingame).ws.generateCraftRectangles();
@@ -78,24 +87,35 @@ public class NoticeBoard extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
 		background.draw();
-		
 		g.setColor(Color.decode("#73040F"));
-		g.drawImage(scroll, 50, 150);
-		//g.scale(4.5f, 4.5f );
-		//g.drawString("Requests by the citizens: ",200,150);
-		int col=210;
-		for(Weapon wep:requests){
-			g.drawString(wep.name(),75,col);
-			col +=30;
-		}
+		g.drawImage(scroll, 100, 280);
+		int col =325;
+			for(Weapon weapon:requests){
+				g.drawString(weapon.name(),140,col);
+				col +=30;
+			}
+			
 		//weapon text details
-		
+		if(wep !=null){
+			wep.render(container,maingame,g);
+			g.setColor(Color.white);
+			String text = wep.flavorText;
+			g.drawString(text,325,325);
+			
+			//resource cost rendering
+			g.drawString("requires:", 325, 470);
+			g.drawImage(new Image("Images/log.png"), 410 ,470);
+			g.drawString("x" +wep.logCost, 450, 470);
+			g.drawImage(new Image("Images/iron.png"), 485 ,470);
+			g.drawString("x" +wep.ironCost, 525, 470);
+		}
 		
 		//exitdoor details
+		g.setColor(Color.decode("#73040F"));
 		g.drawString("*Step away from the board*",exitDoor.getMinX(),exitDoor.getMinY());
 		g.draw(exitDoor);
 		g.setColor(Color.cyan);
-		g.drawString("Tip: To go to your house, step away from the noticeboard.", 75, 580);
+		g.drawString("Tip: To go back to your house, step away from the noticeboard.", 75, 580);
 		
 	}
 
@@ -128,6 +148,16 @@ public class NoticeBoard extends BasicGameState {
 		
 		if(requests.isEmpty()){
 			populateList(maingame);
+		}
+		
+		for(Rectangle rec:noticeRectangles)
+		{	
+			if(rec ==null){
+				
+			}else if(rec.contains(mouseX, mouseY)&& noticeRectangles.indexOf(rec) < requests.size() ){
+					
+					wep = requests.get(noticeRectangles.indexOf(rec));
+			}
 		}
 		
 		

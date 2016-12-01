@@ -25,38 +25,47 @@ public class LightningDamage extends Prefix {
 			case 0:{
 				minAdd = 1;
 				maxAdd = 10;
+				super.setMultiplier(0.05);
 				break;
 			}case 1:{
 				minAdd = 1;
 				maxAdd = 43;
+				super.setMultiplier(0.07);
 				break;
 			}case 2:{
 				minAdd = 2;
 				maxAdd = 66;
+				super.setMultiplier(0.09);
 				break;
 			}case 3:{
 				minAdd = 2;
 				maxAdd = 92;
+				super.setMultiplier(0.12);
 				break;
 			}case 4:{
 				minAdd = 3;
 				maxAdd = 115;
+				super.setMultiplier(0.15);
 				break;
 			}case 5:{
 				minAdd = 4;
 				maxAdd = 145;
+				super.setMultiplier(0.19);
 				break;
 			}case 6:{
 				minAdd = 4;
 				maxAdd = 174;
+				super.setMultiplier(0.22);
 				break;
 			}case 7:{
 				minAdd = 5;
 				maxAdd = 211;
+				super.setMultiplier(0.23);
 				break;
 			}case 8:{
 				minAdd = 6;
 				maxAdd = 250;
+				super.setMultiplier(0.25);
 				break;
 			}
 			default:{
@@ -68,15 +77,15 @@ public class LightningDamage extends Prefix {
 		}
 		
 		
-		wep.setMinPhysDamage(wep.getMinEleDamage() + minAdd);
-		wep.setMaxPhysDamage(wep.getMaxEleDamage() + maxAdd);
+		wep.setMinEleDamage(wep.getMinEleDamage() + minAdd);
+		wep.setMaxEleDamage(wep.getMaxEleDamage() + maxAdd);
 		
 		
 		this.setTooltip("\nAdds "+minAdd + " - " + maxAdd +" lightning damage");
 		wep.weaponText += this.getTooltip();
 		if(! wep.isRare())
 		renameWeapon(wep,fin);
-		System.out.println(wep);
+		
 	}
 
 	@Override

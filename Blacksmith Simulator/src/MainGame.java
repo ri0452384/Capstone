@@ -1,15 +1,8 @@
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
+import java.io.File;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 
@@ -24,8 +17,7 @@ public class MainGame extends StateBasedGame {
 	Mines mine;
 	Workshop ws;
 	NoticeBoard notice;
-	
-	UnicodeFont uni;
+	Title title;
 	
 	public MainGame(String title) {
 		super(title);
@@ -44,8 +36,6 @@ public class MainGame extends StateBasedGame {
 		System.setProperty("org.lwjgl.librarypath", new File("libraries/native/windows").getAbsolutePath());
 		
 		
-		
-		
 		//initialize the application window here
 		AppGameContainer app = new AppGameContainer(new MainGame("Blacksmith Simulator 0.90 build 1.0.0.0"));
 		app.setDisplayMode(800, 600, false);
@@ -61,10 +51,13 @@ public class MainGame extends StateBasedGame {
 		
 		smith = new Player();
 		gs = new GameState(smith);
-		menu = new Menu(smith);
+		menu = new Menu();
 		mine = new Mines();
 		ws = new Workshop(smith);
 		notice = new NoticeBoard();
+		title = new Title();
+		
+		this.addState(title); 	//screen id: 6
 		
 		this.addState(gs);//screen id: 1
 		
@@ -77,20 +70,7 @@ public class MainGame extends StateBasedGame {
 		this.addState(mine); //screen id: 4
 		
 		this.addState(notice); // screen id: 5
-		try{
-			InputStream is = new FileInputStream("diablo.ttf");
-			Font diablo = Font.createFont(Font.PLAIN, is);
-			diablo = diablo.deriveFont(1, 500);
-			uni = new UnicodeFont(diablo, 12, false, false);
-			
-		}catch(IOException e){
-			e.printStackTrace();
-		}catch (FontFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			this.getContainer().getGraphics().setFont(uni);
-		}
+		
 		
 	}
 

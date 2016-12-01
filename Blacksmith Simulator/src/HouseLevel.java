@@ -21,17 +21,17 @@ boolean mineOpen;
 			throws SlickException {
 		float[] polygonPoints = new float[]{
 				//0,0,
-				25,25,
-				25,575,
-				775,575,
-				775,25,
+				160,70,
+				160,545,
+				640,545,
+				640,70,
 		};
 		levelBase = new Polygon(polygonPoints);
 		
-		mineDoor = new Polygon(new float[]{100,25,	250,25});
-		notDoor = new Rectangle(500, 100, 150, 100);
-		workshopDoor = new Rectangle(700,350,50,100);
-		background = new Image("house.png");
+		mineDoor = new Polygon(new float[]{100,25,	120,90});
+		notDoor = new Rectangle(540, 91, 150, 50);
+		workshopDoor = new Rectangle(575,480,64,64);
+		background = new Image("Images/house.png");
 		mineOpen=false;
 		}
 	
@@ -48,13 +48,15 @@ boolean mineOpen;
 	public void render(GameContainer container, StateBasedGame sbg, Graphics g)
 			throws SlickException {
 		g.drawImage(background, 0, 0);
+		if(mineOpen)
+		{
+			g.drawImage(new Image("Images/mine_open.png"), 150, 0);
+		}
 		g.setColor(Color.cyan);
 		//g.draw(levelBase);
-		g.draw(workshopDoor);
-		g.draw(notDoor);
-		if(mineOpen){
-			g.draw(mineDoor);
-		}
+		//g.draw(workshopDoor);
+		//g.draw(notDoor);
+		
 	}
 	
 	public boolean visitNotDoor(Shape player){
@@ -74,6 +76,7 @@ boolean mineOpen;
 			mineOpen = false;
 			mineDoor = new Polygon(new float[]{100,25,	250,25});
 			((MainGame)main).gs.smith.mineTimer = 0;
+			((MainGame)main).menu.mineVisits++;
 			return true;
 		}
 		else return false;

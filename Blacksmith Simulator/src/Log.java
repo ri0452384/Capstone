@@ -17,7 +17,7 @@ public class Log extends Resource {
 		super.name = "log";
 		visibility = true;
 		try {
-			resourceForm = new Image("log.png");
+			resourceForm = new Image("Images/log.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

@@ -25,26 +25,32 @@ public class ReduceArmor extends Suffix {
 			case 0:{
 				minAdd = 5;
 				maxAdd = 7;
+				super.setMultiplier(0.05);
 				break;
 			}case 1:{
 				minAdd = 8;
 				maxAdd = 9;
+				super.setMultiplier(0.07);
 				break;
 			}case 2:{
 				minAdd = 10;
 				maxAdd = 11;
+				super.setMultiplier(0.09);
 				break;
 			}case 3:{
 				minAdd = 12;
 				maxAdd = 13;
+				super.setMultiplier(0.10);
 				break;
 			}case 4:{
 				minAdd = 14;
 				maxAdd = 15;
+				super.setMultiplier(0.12);
 				break;
 			}case 5:{
 				minAdd =16;
 				maxAdd = 17;
+				super.setMultiplier(0.15);
 				break;
 				
 			}
@@ -62,8 +68,8 @@ public class ReduceArmor extends Suffix {
 			renameWeapon(wep,fin);
 		this.setTooltip("\n"+minAdd +"% reduced enemy armor");
 		wep.weaponText += this.getTooltip();
-		System.out.println(wep);
-		//wep.suffixCount++;
+		
+		
 	}
 
 	@Override
