@@ -13,6 +13,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
@@ -61,6 +62,7 @@ public class Menu extends BasicGameState implements GameState,Serializable {
 	private FiveHundredResources fivehundredr;
 	private OneThousandResources thousandr;
 	
+	Sound CHOICE;
 	
 	Menu(){
 		mineVisits = 0;
@@ -76,6 +78,7 @@ public class Menu extends BasicGameState implements GameState,Serializable {
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 		try {
+			CHOICE = new Sound("Images/choice.wav");
 			logIcon = new Image("Images/log.png");
 			ironIcon = new Image("Images/iron.png");
 			background = new Image("Images/menu_background.png");
@@ -154,20 +157,24 @@ public class Menu extends BasicGameState implements GameState,Serializable {
 		int mouseX = container.getInput().getMouseX();
 		int mouseY = container.getInput().getMouseY();
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
+			((MainGame)maingame).menu.CHOICE.play();
 			maingame.enterState(prevState,new FadeOutTransition(), new FadeInTransition());
 		}
 		
 		if(container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			
 			if(mainBox.contains(mouseX,mouseY)){
+				((MainGame)maingame).title.SELECT.play();
 				maingame.enterState(6,new FadeOutTransition(), new FadeInTransition());
 			}
 			
 			if(saveBox.contains(mouseX,mouseY)){
+				((MainGame)maingame).title.SELECT.play();
 				save();
 			}
 			
 			if(loadBox.contains(mouseX,mouseY)){
+				((MainGame)maingame).title.SELECT.play();
 				load((MainGame)maingame);
 			}
 		}
@@ -327,7 +334,7 @@ public class Menu extends BasicGameState implements GameState,Serializable {
 			g.drawImage(new Image("Images/menu_main.png"),mainBox.getMinX(),mainBox.getMinY());
 		}
 		
-		g.drawString("made by Codeneira, Ingles, Mañus, and Tolipas of OGTP Games \nAll rights reserved 2016\n OGTP is an independent software company formed only for CMSC 22.", 200,520);
+		
 		g.drawImage(goldIcon,50, 225);
 		g.drawString("x "+coins,140,235);
 		

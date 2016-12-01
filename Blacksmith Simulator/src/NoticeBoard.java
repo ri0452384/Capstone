@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 
 
+
+
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -28,10 +32,12 @@ public class NoticeBoard extends BasicGameState {
 	ArrayList<Rectangle> noticeRectangles;
 	Shape exitDoor;
 	Weapon wep;
+	Sound REQ;
 
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
+		REQ = new Sound("Images/scroll.wav");
 		exitDoor = new Rectangle(400,500,240,20);
 		requests = new ArrayList<Weapon>();
 		possibleWeapons = new ArrayList<Weapon>();
@@ -127,11 +133,13 @@ public class NoticeBoard extends BasicGameState {
 		int mouseY = container.getInput().getMouseY();
 		
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
+			((MainGame)maingame).menu.CHOICE.play();
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
 		}
 		if(container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)){
 			if(exitDoor.contains(mouseX, mouseY)){
+				REQ.play();
 				maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
 				}
 			}
@@ -150,15 +158,16 @@ public class NoticeBoard extends BasicGameState {
 			populateList(maingame);
 		}
 		
-		for(Rectangle rec:noticeRectangles)
-		{	
-			if(rec ==null){
-				
-			}else if(rec.contains(mouseX, mouseY)&& noticeRectangles.indexOf(rec) < requests.size() ){
+			for(Rectangle rec:noticeRectangles)
+			{	
+				if(rec ==null){
 					
-					wep = requests.get(noticeRectangles.indexOf(rec));
+				}else if(rec.contains(mouseX, mouseY)&& noticeRectangles.indexOf(rec) < requests.size() ){
+					
+						wep = requests.get(noticeRectangles.indexOf(rec));
+				}
 			}
-		}
+		
 		
 		
 	}

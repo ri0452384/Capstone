@@ -5,6 +5,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -77,7 +78,7 @@ public abstract class Weapon {
 	int totalPrice;
 	// total multiplier
 	private double totalMultiplier;
-	
+	Sound IMBUE;
 	
 	//crafting cost of the weapon will be in terms of metal ores
 	int logCost;
@@ -87,6 +88,12 @@ public abstract class Weapon {
 	
 	//constructor requires minimum dmg, max dmg, weapon name, and x, y coordinates where they can be displayed once crafted
 	Weapon(int minimum, int maximum,String name,int baseprice){
+		try {
+			IMBUE = new Sound("Images/imbue.wav");
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		BASE_NAME = name;
 		BASE_MIN = minimum;
 		BASE_MAX = maximum;
@@ -305,8 +312,10 @@ public abstract class Weapon {
 				p = pre.get(i);
 				pre.remove(i);
 				if(! this.alreadyHas(p.getAffixName())){
+					IMBUE.play();
 					prefixes[prefixCount] = p;
 					prefixes[prefixCount++].imbue(this);
+					
 					this.computeSellPrice();
 				}
 			}
@@ -322,6 +331,7 @@ public abstract class Weapon {
 				s = suf.get(i);
 				suf.remove(i);
 				if(! this.alreadyHas(s.getAffixName())){
+					IMBUE.play();
 				suffixes[suffixCount] = s;
 				suffixes[suffixCount++].imbue(this);
 				this.computeSellPrice();
@@ -360,6 +370,7 @@ public abstract class Weapon {
 			}
 			else
 			{
+				
 				totalMultiplier += af.getMultiplier();
 			}
 
@@ -376,6 +387,7 @@ public abstract class Weapon {
 			}
 			
 		}
+		
 		totalPrice = (int) ((1+totalMultiplier) * basePrice );
 		
 }

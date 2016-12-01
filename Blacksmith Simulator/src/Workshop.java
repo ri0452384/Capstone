@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
@@ -6,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
@@ -24,8 +26,8 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
  */
 public class Workshop extends BasicGameState implements GameState {
 	
-	@SuppressWarnings("unused")
-	private Player smith;
+	int playSound;
+	
 	//private Image craftButton;
 	private Rectangle craftContainer;
 	private Image imbueButton;
@@ -50,14 +52,20 @@ public class Workshop extends BasicGameState implements GameState {
 	private int scourCount;
 	//choice of the weapon about to be crafted
 	int choice;
-	Workshop(Player smith){
-		this.smith = smith;
-	}
+	private Sound GOLD;
+	Sound ANVIL;
+	Sound SCOUR;
+	Sound WIN;
+	Sound BLANK;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
-		
+		GOLD = new Sound("Images/gold.wav");
+		ANVIL = new Sound("Images/anvil.wav");
+		SCOUR = new Sound("Images/scour.wav");
+		WIN = new Sound("Images/win.wav");
+		BLANK = new Sound("Images/blank.wav");
 		//now is located in the anvil object inside the workshop
 		craftContainer = new Rectangle(665, 433, 170, 80);
 		//rune for the imbue method, which adds a random prefix/suffix to the weapon
@@ -66,7 +74,7 @@ public class Workshop extends BasicGameState implements GameState {
 		//rune for removing all magical properties from the weapon
 		imbueButton1 = new Image("Images/imbueButton1.png");
 		imbueContainer1 = new Rectangle(250, 400, imbueButton1.getWidth(), imbueButton1.getHeight());
-		//TODO implement a use for this button/rune
+		//sell button
 		imbueButton2 = new Image("Images/imbueButton2.png");
 		imbueContainer2 = new Rectangle(350, 400, imbueButton2.getWidth(), imbueButton2.getHeight());
 		wsDoor = new Polygon(new float[]{571,338,	624,338,	624,476,	575,470});
@@ -78,14 +86,16 @@ public class Workshop extends BasicGameState implements GameState {
 		renderWeapon = false;
 		//you only have 5 chances to scour any crafted weapon, is set only after crafting
 		scourCount = 0;
-		
+		playSound = 0;
 	}
 
 	protected void generateCraftRectangles() {
-		int row=50;
-		for(int i=0;i<5;i++){
-			craftRectangles.add(new Rectangle(row,550,125, 25));
-			row += 150;
+		if(craftRectangles.isEmpty()){
+			int row=50;
+			for(int i=0;i<5;i++){
+				craftRectangles.add(new Rectangle(row,550,125, 25));
+				row += 150;
+			}
 		}
 		
 	}
@@ -93,7 +103,6 @@ public class Workshop extends BasicGameState implements GameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame maingame, int delta)
 			throws SlickException {
-		
 		//unlimited resources cheat. remove comments to enable, recommended in developer mode/testing
 		//((MainGame)maingame).menu.ironCount +=5;
 		//((MainGame)maingame).menu.logCount +=5;
@@ -107,13 +116,13 @@ public class Workshop extends BasicGameState implements GameState {
 		
 	
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
+			((MainGame)maingame).menu.CHOICE.play();
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
 		}
 		
 				if(container.getInput().isMousePressed(Input.MOUSE_LEFT_BUTTON)){
-					//fixed: multiple clicking by changing the input from isMouseButtonDown to isMousePressed event handling
-					
+					//input handling
 					if(craftContainer.contains(mouseX, mouseY)){
 						if(!craftRectangles.isEmpty() || wep!=null){
 							craft((MainGame)maingame);
@@ -144,6 +153,7 @@ public class Workshop extends BasicGameState implements GameState {
 					}
 					//checks if the workshop door is clicked, exits back to the smith's house
 					if(wsDoor.contains(mouseX, mouseY)){
+						((MainGame)maingame).gs.DOOR.play();
 						maingame.enterState(1,new FadeOutTransition(), new FadeInTransition());
 					}
 					
@@ -174,7 +184,7 @@ public class Workshop extends BasicGameState implements GameState {
 	
 	private void sell(StateBasedGame maingame) {
 		if(renderWeapon){
-		//wep.computeSellPrice();
+		GOLD.play();
 		((MainGame)maingame).menu.coins += wep.totalPrice;
 		
 		craftChoices.remove(choice);
@@ -183,12 +193,17 @@ public class Workshop extends BasicGameState implements GameState {
 		((MainGame)maingame).menu.weaponSold++;
 		wep = null;
 		choice = -1;
+		
+			
 		}
 	}
 
+	
+
 	//helper method called to remove properties from the weapon, only limited to 5 charges per weapon crafted
 	private void scour(){
-		if(scourCount > 0){
+		if(scourCount > 0 && wep !=null){
+			SCOUR.play();
 			wep.removeAffixes();
 			scourCount--;
 		}
@@ -200,6 +215,7 @@ public class Workshop extends BasicGameState implements GameState {
 		if(wep.prefixes[2] != null && wep.suffixes[2] != null){
 			return;
 		}else{
+			
 			wep.addAffix();
 			return;
 		}
@@ -213,24 +229,41 @@ public class Workshop extends BasicGameState implements GameState {
 		if(choice == -1 || choice >= craftChoices.size()){
 			return;
 		}else{
+			
 			wep=craftChoices.get(choice);
 			if((maingame.menu.ironCount >= wep.ironCost) && (maingame.menu.logCount >= wep.logCost)){
+				
+					ANVIL.play();
+					ANVIL.play();
+					ANVIL.play();
+				maingame.getContainer().sleep(500);
 				wep=craftChoices.get(choice);
 				renderWeapon = true;
 				maingame.menu.ironCount -= wep.ironCost;
 				maingame.menu.logCount -=wep.logCost;
+				ANVIL.stop();
 			}
 		}
 		
 			
 	}
 
-	
-	
-
 	@Override
 	public void render(GameContainer container, StateBasedGame maingame, Graphics g)
 			throws SlickException {
+		
+		if(((MainGame)maingame).menu.coins >=1){
+			g.clear();
+			g.setColor(Color.black);
+			g.fill(new Rectangle(300,400,200,100));
+			g.setColor(Color.white);
+			g.drawString("You have won the game! \n press ENTER to continue", 320, 450);
+			
+			if(container.getInput().isKeyPressed(Input.KEY_ENTER))
+				maingame.enterState(0,new FadeOutTransition(), new FadeInTransition());
+			
+		}
+		
 		String tip="Welcome to the Workshop!";
 		background.draw();
 		//drawDebugLines(g,50);
@@ -309,6 +342,29 @@ public class Workshop extends BasicGameState implements GameState {
 			g.drawString("Craft",craftContainer.getCenterX(),craftContainer.getCenterY());
 		}
 		
+		
+		
+		if(((MainGame)maingame).menu.coins >=52000){
+			((MainGame)maingame).gameover.story_completed = true;
+			if(!(playSound==1)){
+				WIN.play();
+				playSound = 1;
+			}
+			g.setColor(Color.decode("#141326"));
+			g.fill(new Rectangle(300,200,300,150));
+			g.setColor(Color.white);
+			g.drawString("       CONGRATULATIONS!!!"
+					+ "\nYou have finally crafted enough"
+					+ "\n     weapons to vanquish the "
+					+ "\n        monster threat!\n"
+					+ "	\n     press ENTER to continue", 310, 210);
+			
+			if(container.getInput().isKeyPressed(Input.KEY_ENTER)){
+				
+				maingame.enterState(0,new FadeOutTransition(), new FadeInTransition());
+				
+			}
+		}
 		
 	}
 

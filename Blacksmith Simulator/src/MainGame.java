@@ -7,7 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 
 
-
 public class MainGame extends StateBasedGame {
 	
 	Player smith;
@@ -18,11 +17,12 @@ public class MainGame extends StateBasedGame {
 	Workshop ws;
 	NoticeBoard notice;
 	Title title;
+	GameOverState gameover;
 	
 	public MainGame(String title) {
 		super(title);
 		//setting the fonts in slick
-	
+		
 		
 	}
 
@@ -46,6 +46,8 @@ public class MainGame extends StateBasedGame {
 
 
 
+
+
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		
@@ -53,15 +55,16 @@ public class MainGame extends StateBasedGame {
 		gs = new GameState(smith);
 		menu = new Menu();
 		mine = new Mines();
-		ws = new Workshop(smith);
+		ws = new Workshop();
 		notice = new NoticeBoard();
 		title = new Title();
+		gameover = new GameOverState();
 		
 		this.addState(title); 	//screen id: 6
 		
 		this.addState(gs);//screen id: 1
 		
-		this.addState(new GameOverState(smith));//screen id: 0
+		this.addState(gameover);//screen id: 0
 		
 		this.addState(menu); //screen id: 2
 		

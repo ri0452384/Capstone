@@ -19,13 +19,14 @@ public class MineLevel extends StaticLevel {
 	private Shape pool;
 	private Shape rock;
 	private Shape pillar;
-	
+
 	
 	ArrayList<Resource> metals;
 	private int maxResource;
 
 	public void init(GameContainer container, StateBasedGame sbg)
 			throws SlickException {
+	
 		float[] polygonPoints = new float[] {
 					150, 0,
 					150, 190,
@@ -165,10 +166,13 @@ public class MineLevel extends StaticLevel {
 				if(met instanceof Iron){
 					((MainGame)main).menu.ironCount ++;
 					((MainGame)main).menu.resources++;
+					((MainGame)main).mine.ironPickup.play();
+					
 					}
 				if(met instanceof Log){
 					((MainGame)main).menu.logCount ++;
 					((MainGame)main).menu.resources++;
+					((MainGame)main).mine.woodPickup.play();
 				}
 				metals.remove(met);
 				return true;
@@ -180,7 +184,7 @@ public class MineLevel extends StaticLevel {
 	
 
 	public boolean exitMine(Shape player) {
-
+		
 		return mineExit.intersects(player);
 
 	}

@@ -66,8 +66,8 @@ public class Miner {
 		container.sleep(50);
 		g.setColor(Color.green);
 		//currentAnimation.draw(playerBox.getX(), playerBox.getY());
-		g.draw(playerBox);
-		g.drawAnimation(downAnimation, vector.x, vector.y);//(new Image("miner.png"), vector.x, vector.y);
+		//g.draw(playerBox);
+		g.drawAnimation(currentAnimation, vector.x, vector.y);//(new Image("miner.png"), vector.x, vector.y);
 	}
 
 	private void mineCollisionTest(GameContainer container, int delta) {
@@ -142,26 +142,26 @@ public class Miner {
 			int delta) throws SlickException {
 		level.update(container,maingame,delta);
 		mineCollisionTest(container, delta);
-		tunnelCollisionTest(container,delta);
+		tunnelCollisionTest(container,maingame,delta);
 		this.level.metalCollisionTest(playerBox,(MainGame) maingame);
 	}
 	
 	
 	
-	private void tunnelCollisionTest(GameContainer container,int delta){
-		//TODO insert super mario tunnel sound or something for the lulz
+	private void tunnelCollisionTest(GameContainer container, StateBasedGame maingame,int delta){
+		
 		if(level.atLowerTunnel(playerBox)){
 			vector.x = 165;
 			vector.y = 	40;
+			((MainGame)maingame).mine.tunnel.play();
 			container.sleep(1000);
 		}
 		else if(level.atUpperTunnel(playerBox)){
 			vector.x = 710;
 			vector.y = 45;
+			((MainGame)maingame).mine.tunnel.play();
 			container.sleep(1000);
-			
 		}
-		
 		playerBox.setLocation(vector);
 		
 	}

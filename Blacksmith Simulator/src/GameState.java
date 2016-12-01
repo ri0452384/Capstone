@@ -3,6 +3,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -12,7 +13,9 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 public class GameState extends BasicGameState {
 
 	Player smith;
-	
+	Sound DOOR;
+	Sound minedoor;
+
 	
 	GameState(Player smith){
 		this.smith = smith;
@@ -21,6 +24,8 @@ public class GameState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame maingame)
 			throws SlickException {
+		DOOR = new Sound("Images/door.wav");
+		minedoor = new Sound("Images/minedoor.wav");
 		smith = new Player();
 		smith.init(container, maingame);
 		
@@ -32,10 +37,12 @@ public class GameState extends BasicGameState {
 		
 		
 		if(container.getInput().isKeyPressed(Input.KEY_ESCAPE)){
+			((MainGame)maingame).menu.CHOICE.play();
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(2,new FadeOutTransition(), new FadeInTransition());
 		}
 		if(smith.level.visitWorkshop(smith.playerBox)){
+			DOOR.play();
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(3, new FadeOutTransition(), new FadeInTransition());
 			smith.vector.x = 525;
@@ -52,6 +59,7 @@ public class GameState extends BasicGameState {
 			
 		}
 		if(smith.level.visitMine(smith.playerBox,(MainGame) maingame)){
+			minedoor.play();
 			((MainGame)maingame).menu.prevState = getID();
 			maingame.enterState(4, new FadeOutTransition(), new FadeInTransition());
 			((MainGame)maingame).mine.smith.level.refillMetals();
