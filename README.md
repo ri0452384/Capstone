@@ -1,4 +1,4 @@
-# A weapon smith's story
+# The Blacksmith's story
 
 
 ####In a faraway land, there lived a smith named Will. In a world where humans waged war against monster, it is up to Will to supply the weapons that his people will use to win the war. 
@@ -10,7 +10,7 @@
 ###NEW! BETA testing is now available!!!
 ####To test the game
 1. get the .zip file from this link:
-https://drive.google.com/open?id=0BzW_l1b2Wb1VSFRnWmY0Zk9HWG8
+https://drive.google.com/open?id=0BzW_l1b2Wb1VZHQ0X3lKLVpuVW8
 2. extract the .zip file to your desktop, or any folder you prefer.
 3. run the BSS.jar file in the folder
 4. mine resources, read requests, and craft your way to achievements of epic proportions!
